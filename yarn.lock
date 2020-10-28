@@ -5416,6 +5416,11 @@ rimraf@~2.2.6:
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.2.8.tgz#e439be2aaee327321952730f99a8929e4fc50582"
   integrity sha1-5Dm+Kq7jJzIZUnMPmaiSnk/FBYI=
 
+rn-indy-sdk@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/rn-indy-sdk/-/rn-indy-sdk-0.1.4.tgz#c2bf5c6dd94fc28f5c406c26c346388681aae4e4"
+  integrity sha512-6ssS5du9fIryLSoFtamQpa5Ou5PxdeFmVMnASnsxlVpK6aELCZ+hSKrMd2/xxreO7azmZhtBTDnR9/OgMagC7g==
+
 rsvp@^4.8.4:
   version "4.8.5"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-4.8.5.tgz#c8f155311d167f68f21e168df71ec5b083113734"
