@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "aries-framework-javascript": "file:aries-framework-javascript-v1.0.0.tgz",
     "react": "16.9.0",
     "react-native": "0.61.5",
     "rn-indy-sdk": "^0.1.4"
