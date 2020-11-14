@@ -5,7 +5,7 @@ import {
 } from 'aries-framework-javascript';
 import indy from 'rn-indy-sdk';
 import axios from 'axios';
-import poll from 'await-poll';
+import {poll} from 'await-poll';
 import {InitConfig} from 'aries-framework-javascript/build/lib/types';
 import RNFS from 'react-native-fs';
 
@@ -43,14 +43,14 @@ class PollingInboundTransporter implements InboundTransporter {
 
   public async registerMediator(agent: Agent) {
     const mediatorUrl = agent.getMediatorUrl();
-    const mediatorInvitationUrl: string = await axios.get(
+    const mediatorInvitationUrlResponse = await axios.get(
       `${mediatorUrl}/invitation`,
     );
     const response = await axios.get(`${mediatorUrl}/`);
     const {verkey: mediatorVerkey} = response.data;
     await agent.routing.provision({
       verkey: mediatorVerkey,
-      invitationUrl: mediatorInvitationUrl,
+      invitationUrl: mediatorInvitationUrlResponse.data,
     });
     this.pollDownloadMessages(agent);
   }
@@ -85,17 +85,26 @@ class HttpOutboundTransporter implements OutboundTransporter {
     console.log('Sending message...');
     console.log(payload);
 
-    if (receiveReply) {
-      const response: string = await axios.post(
-        `${endpoint}`,
-        JSON.stringify(payload),
-      );
-      console.log('response', response);
-      const wireMessage = JSON.parse(response);
-      console.log('wireMessage', wireMessage);
-      return wireMessage;
-    } else {
-      await axios.post(`${endpoint}`, JSON.stringify(payload));
+    try {
+      if (receiveReply) {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.text();
+
+        const wireMessage = JSON.parse(data);
+        return wireMessage;
+      } else {
+        await fetch(endpoint, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+        });
+      }
+    } catch (e) {
+      console.log('error sending message', JSON.stringify(e));
+      throw e;
     }
   }
 }
@@ -114,10 +123,10 @@ const initAgent = async () => {
 
   const agentConfig: InitConfig = {
     label: 'javascript',
-    walletConfig: {id: 'wallet-' + Math.random()},
+    walletConfig: {id: 'wallet' + Math.random()},
     walletCredentials: {key: '123'},
     autoAcceptConnections: true,
-    mediatorUrl: 'http://192.168.2.5:3001',
+    mediatorUrl: 'http://172.20.10.3:3001',
     poolName: 'test-103' + Math.random(),
     genesisPath,
   };

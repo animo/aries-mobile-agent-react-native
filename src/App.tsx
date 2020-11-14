@@ -1,4 +1,8 @@
-import {Agent} from 'aries-framework-javascript';
+import {
+  Agent,
+  ConnectionRecord,
+  decodeInvitationFromUrl,
+} from 'aries-framework-javascript';
 import React, {useState} from 'react';
 import {
   SafeAreaView,
@@ -7,6 +11,8 @@ import {
   View,
   StatusBar,
   Button,
+  TextInput,
+  Text,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -14,14 +20,35 @@ import {initAgent} from './agentInit';
 
 const App = () => {
   const [agent, setAgent] = useState<Agent>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [invitation, setInvitation] = useState(null);
+  const [connection, setConnection] = useState<ConnectionRecord | null>(null);
 
   async function setupAgent() {
     const agent = await initAgent();
-    setAgent(agent);
-    console.log('agent set');
+    console.log('got agent');
 
     await agent.init();
     console.log('agent initialized');
+    setAgent(agent);
+    setIsInitialized(true);
+  }
+
+  async function createConnection() {
+    const invitationMessage = await decodeInvitationFromUrl(invitation);
+    const connection = await agent.connections.receiveInvitation(
+      invitationMessage.toJSON(),
+      {
+        autoAcceptConnection: true,
+      },
+    );
+
+    setConnection(connection);
+
+    setInterval(async () => {
+      const conn = await agent.connections.find(connection.id);
+      setConnection(conn);
+    }, 1000);
   }
 
   return (
@@ -34,6 +61,22 @@ const App = () => {
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
               <Button title="Init Agent" onPress={setupAgent} />
+
+              {isInitialized && (
+                <>
+                  <TextInput onChangeText={setInvitation} />
+                  <Button
+                    title="Create Connection"
+                    onPress={createConnection}
+                  />
+                </>
+              )}
+
+              {connection && (
+                <>
+                  <Text>Connection State: {connection.state}</Text>
+                </>
+              )}
             </View>
           </View>
         </ScrollView>
