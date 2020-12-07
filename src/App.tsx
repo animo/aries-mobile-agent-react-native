@@ -4,7 +4,7 @@ import {
   ConnectionRecord,
   decodeInvitationFromUrl,
 } from 'aries-framework-javascript';
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,15 +15,16 @@ import {
   TextInput,
   Text,
 } from 'react-native';
-
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {initAgent} from './agentInit';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { initAgent } from './agentInit';
+import Connection from './components/connection';
 
 const App = () => {
   const [agent, setAgent] = useState<Agent>(null);
   const [isInitialized, setIsInitialized] = useState(false);
   const [invitation, setInvitation] = useState(null);
   const [connection, setConnection] = useState<ConnectionRecord | null>(null);
+  const [connections, setConnections] = useState<ConnectionRecord[]>(null);
 
   async function setupAgent() {
     const agent = await initAgent();
@@ -34,6 +35,11 @@ const App = () => {
     setAgent(agent);
     setIsInitialized(true);
   }
+
+  // Get connections when Agent state is updated
+  useEffect(() => {
+    updateConnections();
+  }, [agent])
 
   async function createConnection() {
     const invitationMessage = await decodeInvitationFromUrl(invitation);
@@ -50,6 +56,17 @@ const App = () => {
       const conn = await agent.connections.find(connection.id);
       setConnection(conn);
     }, 1000);
+  }
+
+  const updateConnections = async () => {
+    if (agent) {
+      console.log("AGENT AVAILABLE");
+      const connections = await agent.connections.getAll();
+      setConnections(connections);
+    }
+    else {
+      console.log("AGENT NOT AVAILABLE");
+    }
   }
 
   return (
@@ -79,6 +96,15 @@ const App = () => {
                 </>
               )}
             </View>
+            {/* CONNECTIONS */}
+            {connections && (<View style={styles.connectionsView}>
+              <Text style={styles.title}>Connections: </Text>
+              {connections.map((connection) => {
+                return (
+                  <Connection connection={connection} key={connection.id} />
+                )
+              })}
+            </View>)}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -103,6 +129,14 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: Colors.dark,
   },
+  connectionsView: {
+    marginTop: 20,
+    padding: 10
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold'
+  }
 });
 
 export default App;
