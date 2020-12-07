@@ -22,8 +22,8 @@ import Connection from './components/connection';
 const App = () => {
   const [agent, setAgent] = useState<Agent>(null);
   const [isInitialized, setIsInitialized] = useState(false);
-  const [invitation, setInvitation] = useState(null);
-  const [connection, setConnection] = useState<ConnectionRecord | null>(null);
+  const [ourInvitation, setOurInvitation] = useState(null);
+  const [theirInvitation, setTheirInvitation] = useState(null);
   const [connections, setConnections] = useState<ConnectionRecord[]>(null);
 
   async function setupAgent() {
@@ -43,21 +43,15 @@ const App = () => {
     updateConnections();
   }, [agent])
 
-  async function createConnection() {
-    const invitationMessage = await decodeInvitationFromUrl(invitation);
-    const connection = await agent.connections.receiveInvitation(
-      invitationMessage.toJSON(),
-      {
-        autoAcceptConnection: true,
-      },
-    );
+  const createConnection = async () => {
+    const newConnection = await agent.connections.createConnection({ autoAcceptConnection: true });
+    setOurInvitation(newConnection.invitation);
+    updateConnections();
+  }
 
-    setConnection(connection);
-
-    setInterval(async () => {
-      const conn = await agent.connections.find(connection.id);
-      setConnection(conn);
-    }, 1000);
+  const acceptConnection = async (invitation) => {
+    const acceptedConnection = await agent.connections.receiveInvitation(JSON.parse(invitation), { autoAcceptConnection: true });
+    updateConnections();
   }
 
   const updateConnections = async () => {
@@ -81,26 +75,41 @@ const App = () => {
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
               <Button title="Init Agent" onPress={setupAgent} />
-
+              {/* CREATE CONNECTION */}
               {isInitialized && (
-                <>
-                  <TextInput onChangeText={setInvitation} />
+                <View style={styles.createConnection}>
                   <Button
                     title="Create Connection"
                     onPress={createConnection}
                   />
-                </>
+                  <TextInput
+                    style={styles.ourInviteInput}
+                    multiline={true}
+                    value={JSON.stringify(ourInvitation)}
+                  />
+                </View>
               )}
-
-              {connection && (
-                <>
-                  <Text>Connection State: {connection.state}</Text>
-                </>
+              {/* ACCEPT CONNECTION */}
+              {isInitialized && (
+                <View style={styles.createConnection}>
+                  <Button
+                    title="Accept Connection"
+                    onPress={() => { acceptConnection(theirInvitation) }}
+                  />
+                  <TextInput
+                    style={styles.ourInviteInput}
+                    multiline={true}
+                    onChangeText={(text) => { setTheirInvitation(text) }}
+                  />
+                </View>
               )}
             </View>
             {/* CONNECTIONS */}
             {connections && (<View style={styles.connectionsView}>
               <Text style={styles.title}>Connections: </Text>
+              <Button
+                title="Refresh List"
+                onPress={updateConnections} />
               {connections.map((connection) => {
                 return (
                   <Connection connection={connection} key={connection.id} />
@@ -130,6 +139,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '400',
     color: Colors.dark,
+  },
+  createConnection: {
+    marginTop: 10
+  },
+  ourInviteInput: {
+    borderWidth: 1,
+    borderColor: 'black',
   },
   connectionsView: {
     marginTop: 20,

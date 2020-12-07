@@ -16,6 +16,7 @@ const Connection = ({ connection }: ConnectionProps) => {
       <Text>Alias: {connection.alias}</Text>
       <Text>ID: {connection.id}</Text>
       <Text>DID: {connection.did}</Text>
+      <Text>Their DID: {connection.theirDid}</Text>
       <Text>State: {connection.state}</Text>
     </View>
   );
