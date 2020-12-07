@@ -27,7 +27,9 @@ const App = () => {
   const [connections, setConnections] = useState<ConnectionRecord[]>(null);
 
   async function setupAgent() {
-    const agent = await initAgent();
+    const agent = await initAgent({
+      mediatorUrl: 'https://90eab166f78c.ngrok.io',
+    });
     console.log('got agent');
 
     await agent.init();

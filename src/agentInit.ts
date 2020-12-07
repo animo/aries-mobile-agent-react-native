@@ -117,18 +117,18 @@ class HttpOutboundTransporter implements OutboundTransporter {
 const inbound = new PollingInboundTransporter();
 const outbound = new HttpOutboundTransporter();
 
-const initAgent = async () => {
+const initAgent = async (partialConfig: Partial<InitConfig> = {}) => {
   const genesis = await downloadGenesis();
   const genesisPath = await storeGenesis(genesis, 'genesis.txn');
 
   const agentConfig: InitConfig = {
     label: 'javascript',
-    walletConfig: {id: 'wallet' + Math.random()},
+    walletConfig: {id: 'wallet'},
     walletCredentials: {key: '123'},
     autoAcceptConnections: true,
-    mediatorUrl: 'http://172.20.10.3:3001',
-    poolName: 'test-103' + Math.random(),
+    poolName: 'test-103',
     genesisPath,
+    ...partialConfig,
   };
 
   const result = new Agent(agentConfig, inbound, outbound, indy);
