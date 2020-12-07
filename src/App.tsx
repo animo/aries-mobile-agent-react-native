@@ -2,6 +2,7 @@ import 'react-native-get-random-values';
 import {
   Agent,
   ConnectionRecord,
+  encodeInvitationToUrl,
   decodeInvitationFromUrl,
 } from 'aries-framework-javascript';
 import React, { useEffect, useState } from 'react';
@@ -45,12 +46,14 @@ const App = () => {
 
   const createConnection = async () => {
     const newConnection = await agent.connections.createConnection({ autoAcceptConnection: true });
-    setOurInvitation(newConnection.invitation);
+    const invitationUrl = await encodeInvitationToUrl(newConnection.invitation, agent.getMediatorUrl());
+    setOurInvitation(invitationUrl);
     updateConnections();
   }
 
-  const acceptConnection = async (invitation) => {
-    const acceptedConnection = await agent.connections.receiveInvitation(JSON.parse(invitation), { autoAcceptConnection: true });
+  const acceptConnection = async (invitationUrl) => {
+    const invitation = await decodeInvitationFromUrl(invitationUrl);
+    const acceptedConnection = await agent.connections.receiveInvitation(invitation.toJSON(), { autoAcceptConnection: true });
     updateConnections();
   }
 
