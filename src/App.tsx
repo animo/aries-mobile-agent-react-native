@@ -4,6 +4,7 @@ import {
   ConnectionRecord,
   encodeInvitationToUrl,
   decodeInvitationFromUrl,
+  CredentialRecord
 } from 'aries-framework-javascript';
 import React, { useEffect, useState } from 'react';
 import {
@@ -19,13 +20,15 @@ import {
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { initAgent } from './agentInit';
 import Connection from './components/connection';
+import Credential from './components/credential';
 
 const App = () => {
   const [agent, setAgent] = useState<Agent>(null);
   const [isInitialized, setIsInitialized] = useState(false);
   const [ourInvitation, setOurInvitation] = useState(null);
   const [theirInvitation, setTheirInvitation] = useState(null);
-  const [connections, setConnections] = useState<ConnectionRecord[]>(null);
+  const [connections, setConnections] = useState<ConnectionRecord[]>([]);
+  const [credentials, setCredentials] = useState<CredentialRecord[]>([]);
 
   async function setupAgent() {
     const agent = await initAgent({
@@ -68,6 +71,11 @@ const App = () => {
     }
   }
 
+  const updateCredentials = async () => {
+    const credentials = await agent.credentials.getCredentials();
+    setCredentials(credentials);
+  }
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -108,7 +116,7 @@ const App = () => {
               )}
             </View>
             {/* CONNECTIONS */}
-            {connections && (<View style={styles.connectionsView}>
+            {isInitialized && (<View style={styles.connectionsView}>
               <Text style={styles.title}>Connections: </Text>
               <Button
                 title="Refresh List"
@@ -119,6 +127,19 @@ const App = () => {
                 )
               })}
             </View>)}
+            {/* CREDENTIALS */}
+            {isInitialized && (<View style={styles.credentialsView}>
+              <Text style={styles.title}>Credentials: </Text>
+              <Button
+                title="Refresh List"
+                onPress={updateCredentials} />
+              {credentials.map((credential) => {
+                return (
+                  <Credential credential={credential} key={credential.id} />
+                )
+              })}
+            </View>
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -151,6 +172,10 @@ const styles = StyleSheet.create({
     borderColor: 'black',
   },
   connectionsView: {
+    marginTop: 20,
+    padding: 10
+  },
+  credentialsView: {
     marginTop: 20,
     padding: 10
   },
