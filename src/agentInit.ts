@@ -1,12 +1,8 @@
-import {
-  InboundTransporter,
-  OutboundTransporter,
-  Agent,
-} from 'aries-framework-javascript';
+import { InboundTransporter, OutboundTransporter, Agent } from 'aries-framework-javascript';
 import indy from 'rn-indy-sdk';
 import axios from 'axios';
-import {poll} from 'await-poll';
-import {InitConfig} from 'aries-framework-javascript/build/lib/types';
+import { poll } from 'await-poll';
+import { InitConfig } from 'aries-framework-javascript/build/lib/types';
 import RNFS from 'react-native-fs';
 
 // ==========================================================
@@ -43,11 +39,9 @@ class PollingInboundTransporter implements InboundTransporter {
 
   public async registerMediator(agent: Agent) {
     const mediatorUrl = agent.getMediatorUrl();
-    const mediatorInvitationUrlResponse = await axios.get(
-      `${mediatorUrl}/invitation`,
-    );
+    const mediatorInvitationUrlResponse = await axios.get(`${mediatorUrl}/invitation`);
     const response = await axios.get(`${mediatorUrl}/`);
-    const {verkey: mediatorVerkey} = response.data;
+    const { verkey: mediatorVerkey } = response.data;
     await agent.routing.provision({
       verkey: mediatorVerkey,
       invitationUrl: mediatorInvitationUrlResponse.data,
@@ -67,19 +61,17 @@ class PollingInboundTransporter implements InboundTransporter {
         }
       },
       () => !this.stop,
-      1000,
+      1000
     );
   }
 }
 
 class HttpOutboundTransporter implements OutboundTransporter {
   public async sendMessage(outboundPackage: any, receiveReply: boolean) {
-    const {payload, endpoint} = outboundPackage;
+    const { payload, endpoint } = outboundPackage;
 
     if (!endpoint) {
-      throw new Error(
-        `Missing endpoint. I don't know how and where to send the message.`,
-      );
+      throw new Error(`Missing endpoint. I don't know how and where to send the message.`);
     }
 
     console.log('Sending message...');
@@ -123,8 +115,8 @@ const initAgent = async (partialConfig: Partial<InitConfig> = {}) => {
 
   const agentConfig: InitConfig = {
     label: 'javascript',
-    walletConfig: {id: 'wallet'},
-    walletCredentials: {key: '123'},
+    walletConfig: { id: 'wallet' },
+    walletCredentials: { key: '123' },
     autoAcceptConnections: true,
     poolName: 'test-103',
     genesisPath,
@@ -135,4 +127,4 @@ const initAgent = async (partialConfig: Partial<InitConfig> = {}) => {
   return result;
 };
 
-export {initAgent};
+export { initAgent };

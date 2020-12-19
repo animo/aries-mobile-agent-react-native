@@ -7,7 +7,7 @@ on:
     branches: [master]
 
 jobs:
-  check-formatiting:
+  check-formatting:
     runs-on: ubuntu-20.04
     name: Style
     steps:
@@ -18,7 +18,10 @@ jobs:
         uses: actions/setup-node@v2
 
       - name: Install dependencies
-        run: yarn --update-checksums
+        run: yarn
+
+      - name: Check formatting
+        run: yarn check-format
 
       - name: Lint
         run: yarn lint

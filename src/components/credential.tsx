@@ -1,14 +1,10 @@
 import React from 'react';
 import { CredentialRecord } from 'aries-framework-javascript';
-import {
-  StyleSheet,
-  View,
-  Text,
-} from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
 type CredentialProps = {
-  credential: CredentialRecord
-}
+  credential: CredentialRecord;
+};
 
 const Credential = ({ credential }: CredentialProps) => {
   const value = JSON.parse(credential.getValue());
@@ -18,13 +14,14 @@ const Credential = ({ credential }: CredentialProps) => {
       <Text>State: {credential.state}</Text>
       <Text>Type: {credential.type}</Text>
       <Text>Values:</Text>
-      {value.offer && (
-        value.offer.credential_preview.attributes.map((attr) => {
+      {value.offer &&
+        value.offer.credential_preview.attributes.map(attr => {
           return (
-            <Text>{attr["name"]}: {attr["value"]}</Text>
-          )
-        })
-      )}
+            <Text>
+              {attr['name']}: {attr['value']}
+            </Text>
+          );
+        })}
     </View>
   );
 };
@@ -34,11 +31,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
     padding: 10,
-    margin: 10
+    margin: 10,
   },
   row: {
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+  },
 });
 
 export default Credential;

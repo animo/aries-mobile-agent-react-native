@@ -5,167 +5,74 @@ declare module 'rn-indy-sdk' {
   // NOTE: This interface is exactly the same as the Indy interface below in this file
   // Due to how typing works we can't use that one over here. They should be manually kept in sync (via copy paste!)
   export interface Indy {
-    createWallet(
-      config: WalletConfig,
-      credentials: WalletCredentials,
-    ): Promise<void>;
-    openWallet(
-      config: WalletConfig,
-      credentials: OpenWalletCredentials,
-    ): Promise<WalletHandle>;
+    createWallet(config: WalletConfig, credentials: WalletCredentials): Promise<void>;
+    openWallet(config: WalletConfig, credentials: OpenWalletCredentials): Promise<WalletHandle>;
     closeWallet(wh: WalletHandle): Promise<void>;
-    deleteWallet(
-      config: WalletConfig,
-      credentials: WalletCredentials,
-    ): Promise<void>;
-    createAndStoreMyDid(
-      wh: WalletHandle,
-      did: DidConfig,
-    ): Promise<[Did, Verkey]>;
+    deleteWallet(config: WalletConfig, credentials: WalletCredentials): Promise<void>;
+    createAndStoreMyDid(wh: WalletHandle, did: DidConfig): Promise<[Did, Verkey]>;
     keyForLocalDid(wh: WalletHandle, did: Did): Promise<Verkey>;
     cryptoAnonCrypt(recipientVk: Verkey, messageRaw: Buffer): Promise<Buffer>;
-    cryptoSign(
-      wh: WalletHandle,
-      signerVk: Verkey,
-      messageRaw: Buffer,
-    ): Promise<Buffer>;
-    cryptoVerify(
-      signerVk: Verkey,
-      messageRaw: Buffer,
-      signatureRaw: Buffer,
-    ): Promise<boolean>;
+    cryptoSign(wh: WalletHandle, signerVk: Verkey, messageRaw: Buffer): Promise<Buffer>;
+    cryptoVerify(signerVk: Verkey, messageRaw: Buffer, signatureRaw: Buffer): Promise<boolean>;
     createKey(wh: WalletHandle, key: KeyConfig): Promise<Verkey>;
-    packMessage(
-      wh: WalletHandle,
-      message: Buffer,
-      receiverKeys: Verkey[],
-      senderVk: Verkey | null,
-    ): Promise<Buffer>;
+    packMessage(wh: WalletHandle, message: Buffer, receiverKeys: Verkey[], senderVk: Verkey | null): Promise<Buffer>;
     unpackMessage(wh: WalletHandle, jwe: Buffer): Promise<Buffer>;
     addWalletRecord(
       wh: WalletHandle,
       type: string,
       id: string,
       value: string,
-      tags: Record<string, string>,
+      tags: Record<string, string>
     ): Promise<void>;
-    updateWalletRecordValue(
-      wh: WalletHandle,
-      type: string,
-      id: string,
-      value: string,
-    ): Promise<void>;
-    updateWalletRecordTags(
-      wh: WalletHandle,
-      type: string,
-      id: string,
-      tags: Record<string, string>,
-    ): Promise<void>;
-    addWalletRecordTags(
-      wh: WalletHandle,
-      type: string,
-      id: string,
-      tags: Record<string, string>,
-    ): Promise<void>;
-    deleteWalletRecord(
-      wh: WalletHandle,
-      type: string,
-      id: string,
-    ): Promise<void>;
-    getWalletRecord(
-      wh: WalletHandle,
-      type: string,
-      id: string,
-      options: WalletRecordOptions,
-    ): Promise<WalletRecord>;
+    updateWalletRecordValue(wh: WalletHandle, type: string, id: string, value: string): Promise<void>;
+    updateWalletRecordTags(wh: WalletHandle, type: string, id: string, tags: Record<string, string>): Promise<void>;
+    addWalletRecordTags(wh: WalletHandle, type: string, id: string, tags: Record<string, string>): Promise<void>;
+    deleteWalletRecord(wh: WalletHandle, type: string, id: string): Promise<void>;
+    getWalletRecord(wh: WalletHandle, type: string, id: string, options: WalletRecordOptions): Promise<WalletRecord>;
     openWalletSearch(
       wh: WalletHandle,
       type: string,
       query: WalletQuery,
-      options: WalletSearchOptions,
+      options: WalletSearchOptions
     ): Promise<SearchHandle>;
     fetchWalletSearchNextRecords(
       wh: WalletHandle,
       searchHandle: SearchHandle,
-      count: number,
+      count: number
     ): Promise<WalletRecordSearch>;
     closeWalletSearch(sh: SearchHandle): Promise<void>;
-    createPoolLedgerConfig(
-      configName: string,
-      config?: PoolConfig,
-    ): Promise<void>;
-    openPoolLedger(
-      configName: string,
-      config?: RuntimePoolConfig,
-    ): Promise<PoolHandle>;
+    createPoolLedgerConfig(configName: string, config?: PoolConfig): Promise<void>;
+    openPoolLedger(configName: string, config?: RuntimePoolConfig): Promise<PoolHandle>;
     setProtocolVersion(version: number): Promise<void>;
-    buildGetNymRequest(
-      submitterDid: Did | null,
-      targetDid: Did,
-    ): Promise<LedgerRequest>;
+    buildGetNymRequest(submitterDid: Did | null, targetDid: Did): Promise<LedgerRequest>;
     parseGetNymResponse(response: LedgerResponse): Promise<GetNymResponse>;
-    buildSchemaRequest(
-      submitterDid: Did,
-      schema: Schema,
-    ): Promise<LedgerRequest>;
-    buildGetSchemaRequest(
-      submitterDid: Did | null,
-      schemaId: SchemaId,
-    ): Promise<LedgerRequest>;
-    parseGetSchemaResponse(
-      response: LedgerResponse,
-    ): Promise<[SchemaId, Schema]>;
-    buildCredDefRequest(
-      submitterDid: Did,
-      credDef: CredDef,
-    ): Promise<LedgerRequest>;
-    buildGetCredDefRequest(
-      submitterDid: Did | null,
-      credDefId: CredDefId,
-    ): Promise<LedgerRequest>;
-    parseGetCredDefResponse(
-      response: LedgerResponse,
-    ): Promise<[CredDefId, CredDef]>;
-    signRequest(
-      wh: WalletHandle,
-      submitterDid: Did,
-      request: LedgerRequest,
-    ): Promise<SignedLedgerRequest>;
-    submitRequest(
-      poolHandle: PoolHandle,
-      request: LedgerRequest,
-    ): Promise<LedgerResponse>;
-    issuerCreateSchema(
-      myDid: Did,
-      name: string,
-      version: string,
-      attributes: string[],
-    ): Promise<[SchemaId, Schema]>;
+    buildSchemaRequest(submitterDid: Did, schema: Schema): Promise<LedgerRequest>;
+    buildGetSchemaRequest(submitterDid: Did | null, schemaId: SchemaId): Promise<LedgerRequest>;
+    parseGetSchemaResponse(response: LedgerResponse): Promise<[SchemaId, Schema]>;
+    buildCredDefRequest(submitterDid: Did, credDef: CredDef): Promise<LedgerRequest>;
+    buildGetCredDefRequest(submitterDid: Did | null, credDefId: CredDefId): Promise<LedgerRequest>;
+    parseGetCredDefResponse(response: LedgerResponse): Promise<[CredDefId, CredDef]>;
+    signRequest(wh: WalletHandle, submitterDid: Did, request: LedgerRequest): Promise<SignedLedgerRequest>;
+    submitRequest(poolHandle: PoolHandle, request: LedgerRequest): Promise<LedgerResponse>;
+    issuerCreateSchema(myDid: Did, name: string, version: string, attributes: string[]): Promise<[SchemaId, Schema]>;
     issuerCreateAndStoreCredentialDef(
       wh: WalletHandle,
       myDid: Did,
       schema: Schema,
       tag: string,
       signatureType: string,
-      config?: CredDefConfig,
+      config?: CredDefConfig
     ): Promise<[CredDefId, CredDef]>;
-    issuerCreateCredentialOffer(
-      wh: WalletHandle,
-      credDefId: CredDefId,
-    ): Promise<CredOffer>;
-    buildGetTxnAuthorAgreementRequest(
-      submitterDid: Did | null,
-    ): Promise<LedgerRequest>;
-    buildGetAcceptanceMechanismsRequest(
-      submitterDid: Did | null,
-    ): Promise<LedgerRequest>;
+    issuerCreateCredentialOffer(wh: WalletHandle, credDefId: CredDefId): Promise<CredOffer>;
+    buildGetTxnAuthorAgreementRequest(submitterDid: Did | null): Promise<LedgerRequest>;
+    buildGetAcceptanceMechanismsRequest(submitterDid: Did | null): Promise<LedgerRequest>;
     appendTxnAuthorAgreementAcceptanceToRequest(
       request: LedgerRequest,
       text: string,
       version: string,
       digest: string,
       accMechType: string,
-      timeOfAcceptance: number,
+      timeOfAcceptance: number
     ): Promise<LedgerRequest>;
     abbreviateVerkey(did: Did, fullVerkey: Verkey): Promise<Verkey>;
   }
@@ -176,155 +83,74 @@ declare module 'rn-indy-sdk' {
 // -------------------------------------------------------------------------------- //
 
 interface Indy {
-  createWallet(
-    config: WalletConfig,
-    credentials: WalletCredentials,
-  ): Promise<void>;
-  openWallet(
-    config: WalletConfig,
-    credentials: OpenWalletCredentials,
-  ): Promise<WalletHandle>;
+  createWallet(config: WalletConfig, credentials: WalletCredentials): Promise<void>;
+  openWallet(config: WalletConfig, credentials: OpenWalletCredentials): Promise<WalletHandle>;
   closeWallet(wh: WalletHandle): Promise<void>;
-  deleteWallet(
-    config: WalletConfig,
-    credentials: WalletCredentials,
-  ): Promise<void>;
+  deleteWallet(config: WalletConfig, credentials: WalletCredentials): Promise<void>;
   createAndStoreMyDid(wh: WalletHandle, did: DidConfig): Promise<[Did, Verkey]>;
   keyForLocalDid(wh: WalletHandle, did: Did): Promise<Verkey>;
   cryptoAnonCrypt(recipientVk: Verkey, messageRaw: Buffer): Promise<Buffer>;
-  cryptoSign(
-    wh: WalletHandle,
-    signerVk: Verkey,
-    messageRaw: Buffer,
-  ): Promise<Buffer>;
-  cryptoVerify(
-    signerVk: Verkey,
-    messageRaw: Buffer,
-    signatureRaw: Buffer,
-  ): Promise<boolean>;
+  cryptoSign(wh: WalletHandle, signerVk: Verkey, messageRaw: Buffer): Promise<Buffer>;
+  cryptoVerify(signerVk: Verkey, messageRaw: Buffer, signatureRaw: Buffer): Promise<boolean>;
   createKey(wh: WalletHandle, key: KeyConfig): Promise<Verkey>;
-  packMessage(
-    wh: WalletHandle,
-    message: Buffer,
-    receiverKeys: Verkey[],
-    senderVk: Verkey | null,
-  ): Promise<Buffer>;
+  packMessage(wh: WalletHandle, message: Buffer, receiverKeys: Verkey[], senderVk: Verkey | null): Promise<Buffer>;
   unpackMessage(wh: WalletHandle, jwe: Buffer): Promise<Buffer>;
   addWalletRecord(
     wh: WalletHandle,
     type: string,
     id: string,
     value: string,
-    tags: Record<string, string>,
+    tags: Record<string, string>
   ): Promise<void>;
-  updateWalletRecordValue(
-    wh: WalletHandle,
-    type: string,
-    id: string,
-    value: string,
-  ): Promise<void>;
-  updateWalletRecordTags(
-    wh: WalletHandle,
-    type: string,
-    id: string,
-    tags: Record<string, string>,
-  ): Promise<void>;
-  addWalletRecordTags(
-    wh: WalletHandle,
-    type: string,
-    id: string,
-    tags: Record<string, string>,
-  ): Promise<void>;
+  updateWalletRecordValue(wh: WalletHandle, type: string, id: string, value: string): Promise<void>;
+  updateWalletRecordTags(wh: WalletHandle, type: string, id: string, tags: Record<string, string>): Promise<void>;
+  addWalletRecordTags(wh: WalletHandle, type: string, id: string, tags: Record<string, string>): Promise<void>;
   deleteWalletRecord(wh: WalletHandle, type: string, id: string): Promise<void>;
-  getWalletRecord(
-    wh: WalletHandle,
-    type: string,
-    id: string,
-    options: WalletRecordOptions,
-  ): Promise<WalletRecord>;
+  getWalletRecord(wh: WalletHandle, type: string, id: string, options: WalletRecordOptions): Promise<WalletRecord>;
   openWalletSearch(
     wh: WalletHandle,
     type: string,
     query: WalletQuery,
-    options: WalletSearchOptions,
+    options: WalletSearchOptions
   ): Promise<SearchHandle>;
   fetchWalletSearchNextRecords(
     wh: WalletHandle,
     searchHandle: SearchHandle,
-    count: number,
+    count: number
   ): Promise<WalletRecordSearch>;
   closeWalletSearch(sh: SearchHandle): Promise<void>;
-  createPoolLedgerConfig(
-    configName: string,
-    config?: PoolConfig,
-  ): Promise<void>;
-  openPoolLedger(
-    configName: string,
-    config?: RuntimePoolConfig,
-  ): Promise<PoolHandle>;
+  createPoolLedgerConfig(configName: string, config?: PoolConfig): Promise<void>;
+  openPoolLedger(configName: string, config?: RuntimePoolConfig): Promise<PoolHandle>;
   setProtocolVersion(version: number): Promise<void>;
-  buildGetNymRequest(
-    submitterDid: Did | null,
-    targetDid: Did,
-  ): Promise<LedgerRequest>;
+  buildGetNymRequest(submitterDid: Did | null, targetDid: Did): Promise<LedgerRequest>;
   parseGetNymResponse(response: LedgerResponse): Promise<GetNymResponse>;
   buildSchemaRequest(submitterDid: Did, schema: Schema): Promise<LedgerRequest>;
-  buildGetSchemaRequest(
-    submitterDid: Did | null,
-    schemaId: SchemaId,
-  ): Promise<LedgerRequest>;
+  buildGetSchemaRequest(submitterDid: Did | null, schemaId: SchemaId): Promise<LedgerRequest>;
   parseGetSchemaResponse(response: LedgerResponse): Promise<[SchemaId, Schema]>;
-  buildCredDefRequest(
-    submitterDid: Did,
-    credDef: CredDef,
-  ): Promise<LedgerRequest>;
-  buildGetCredDefRequest(
-    submitterDid: Did | null,
-    credDefId: CredDefId,
-  ): Promise<LedgerRequest>;
-  parseGetCredDefResponse(
-    response: LedgerResponse,
-  ): Promise<[CredDefId, CredDef]>;
-  signRequest(
-    wh: WalletHandle,
-    submitterDid: Did,
-    request: LedgerRequest,
-  ): Promise<SignedLedgerRequest>;
-  submitRequest(
-    poolHandle: PoolHandle,
-    request: LedgerRequest,
-  ): Promise<LedgerResponse>;
-  issuerCreateSchema(
-    myDid: Did,
-    name: string,
-    version: string,
-    attributes: string[],
-  ): Promise<[SchemaId, Schema]>;
+  buildCredDefRequest(submitterDid: Did, credDef: CredDef): Promise<LedgerRequest>;
+  buildGetCredDefRequest(submitterDid: Did | null, credDefId: CredDefId): Promise<LedgerRequest>;
+  parseGetCredDefResponse(response: LedgerResponse): Promise<[CredDefId, CredDef]>;
+  signRequest(wh: WalletHandle, submitterDid: Did, request: LedgerRequest): Promise<SignedLedgerRequest>;
+  submitRequest(poolHandle: PoolHandle, request: LedgerRequest): Promise<LedgerResponse>;
+  issuerCreateSchema(myDid: Did, name: string, version: string, attributes: string[]): Promise<[SchemaId, Schema]>;
   issuerCreateAndStoreCredentialDef(
     wh: WalletHandle,
     myDid: Did,
     schema: Schema,
     tag: string,
     signatureType: string,
-    config?: CredDefConfig,
+    config?: CredDefConfig
   ): Promise<[CredDefId, CredDef]>;
-  issuerCreateCredentialOffer(
-    wh: WalletHandle,
-    credDefId: CredDefId,
-  ): Promise<CredOffer>;
-  buildGetTxnAuthorAgreementRequest(
-    submitterDid: Did | null,
-  ): Promise<LedgerRequest>;
-  buildGetAcceptanceMechanismsRequest(
-    submitterDid: Did | null,
-  ): Promise<LedgerRequest>;
+  issuerCreateCredentialOffer(wh: WalletHandle, credDefId: CredDefId): Promise<CredOffer>;
+  buildGetTxnAuthorAgreementRequest(submitterDid: Did | null): Promise<LedgerRequest>;
+  buildGetAcceptanceMechanismsRequest(submitterDid: Did | null): Promise<LedgerRequest>;
   appendTxnAuthorAgreementAcceptanceToRequest(
     request: LedgerRequest,
     text: string,
     version: string,
     digest: string,
     accMechType: string,
-    timeOfAcceptance: number,
+    timeOfAcceptance: number
   ): Promise<LedgerRequest>;
   abbreviateVerkey(did: Did, fullVerkey: Verkey): Promise<Verkey>;
 }
