@@ -8,7 +8,7 @@ import RNFS from 'react-native-fs';
 // ==========================================================
 // GENESIS FILE DOWNLOAD AND STORAGE
 // ==========================================================
-export async function storeGenesis(genesis: string, fileName: string) {
+export async function storeGenesis(genesis: string, fileName: string): Promise<string> {
   const genesisPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
 
   await RNFS.writeFile(genesisPath, genesis, 'utf8');
@@ -16,7 +16,7 @@ export async function storeGenesis(genesis: string, fileName: string) {
   return genesisPath;
 }
 
-export async function downloadGenesis() {
+export async function downloadGenesis(): Promise<string> {
   const url = 'http://dev.greenlight.bcovrin.vonx.io/genesis';
 
   const response = await axios.get(url);
@@ -33,11 +33,11 @@ class PollingInboundTransporter implements InboundTransporter {
   public constructor() {
     this.stop = false;
   }
-  public async start(agent: Agent) {
+  public async start(agent: Agent): Promise<void> {
     await this.registerMediator(agent);
   }
 
-  public async registerMediator(agent: Agent) {
+  public async registerMediator(agent: Agent): Promise<void> {
     const mediatorUrl = agent.getMediatorUrl();
     const mediatorInvitationUrlResponse = await axios.get(`${mediatorUrl}/invitation`);
     const response = await axios.get(`${mediatorUrl}/`);
@@ -49,33 +49,29 @@ class PollingInboundTransporter implements InboundTransporter {
     this.pollDownloadMessages(agent);
   }
 
-  private pollDownloadMessages(agent: Agent) {
+  private pollDownloadMessages(agent: Agent): void {
     poll(
       async () => {
         const downloadedMessages = await agent.routing.downloadMessages();
         const messages = [...downloadedMessages];
-        console.log('downloaded messges', messages);
         while (messages && messages.length > 0) {
           const message = messages.shift();
           await agent.receiveMessage(message);
         }
       },
       () => !this.stop,
-      1000
+      5000
     );
   }
 }
 
 class HttpOutboundTransporter implements OutboundTransporter {
-  public async sendMessage(outboundPackage: any, receiveReply: boolean) {
+  public async sendMessage(outboundPackage: any, receiveReply: boolean): Promise<void> {
     const { payload, endpoint } = outboundPackage;
 
     if (!endpoint) {
       throw new Error(`Missing endpoint. I don't know how and where to send the message.`);
     }
-
-    console.log('Sending message...');
-    console.log(payload);
 
     try {
       if (receiveReply) {
@@ -95,7 +91,7 @@ class HttpOutboundTransporter implements OutboundTransporter {
         });
       }
     } catch (e) {
-      console.log('error sending message', JSON.stringify(e));
+      // console.log('error sending message', JSON.stringify(e));
       throw e;
     }
   }
@@ -109,7 +105,7 @@ class HttpOutboundTransporter implements OutboundTransporter {
 const inbound = new PollingInboundTransporter();
 const outbound = new HttpOutboundTransporter();
 
-const initAgent = async (partialConfig: Partial<InitConfig> = {}) => {
+const initAgent = async (partialConfig: Partial<InitConfig> = {}): Promise<Agent> => {
   const genesis = await downloadGenesis();
   const genesisPath = await storeGenesis(genesis, 'genesis.txn');
 
@@ -122,8 +118,8 @@ const initAgent = async (partialConfig: Partial<InitConfig> = {}) => {
     genesisPath,
     ...partialConfig,
   };
-
   const result = new Agent(agentConfig, inbound, outbound, indy);
+
   return result;
 };
 
