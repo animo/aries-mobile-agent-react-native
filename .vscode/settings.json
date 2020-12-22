@@ -1,0 +1,10 @@
+{
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "javascriptreact",
+    "typescriptreact"
+  ],
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false
+}
