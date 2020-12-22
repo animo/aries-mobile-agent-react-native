@@ -21,6 +21,8 @@
     "@ui-kitten/components": "^5.0.0",
     "aries-framework-javascript": "file:aries-framework-javascript.tgz",
     "axios": "^0.21.0",
+    "lottie-ios": "3.1.8",
+    "lottie-react-native": "^3.5.0",
     "react": "16.9.0",
     "react-native": "0.61.5",
     "react-native-camera": "^3.40.0",

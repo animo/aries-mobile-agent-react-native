@@ -7,6 +7,7 @@ import { store } from './redux/store';
 import { initAgent } from './agentInit';
 import { setConnections } from './redux/slices/connectionSlice';
 import 'react-native-get-random-values';
+import { LoaderView } from './views';
 
 const App = (): Element => {
   const [agentInitialized, setAgentInitalized] = useState(false);
@@ -27,12 +28,8 @@ const App = (): Element => {
   return (
     <>
       <ApplicationProvider {...eva} theme={eva.dark}>
-        {!agentInitialized && (
-          <Layout>
-            <Text>LOADING</Text>
-          </Layout>
-        )}
-
+        {!agentInitialized && <LoaderView />}
+        {/* <LoaderView /> */}
         {agentInitialized && (
           <Provider store={store}>
             <AppNavigator />
