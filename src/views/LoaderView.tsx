@@ -1,8 +1,8 @@
-import React from 'react'
-import LottieView from 'lottie-react-native'
-import loaderAnimation from '../../assets/17021-id-scan.json'
 import { Layout, StyleService, Text, useStyleSheet } from '@ui-kitten/components'
+import LottieView from 'lottie-react-native'
+import React from 'react'
 import { View } from 'react-native'
+import loaderAnimation from '../../assets/17021-id-scan.json'
 
 const LoaderView: React.FC = (): React.ReactElement => {
   const styles = useStyleSheet(themedStyles)

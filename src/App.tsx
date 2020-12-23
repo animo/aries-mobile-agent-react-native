@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
 import * as eva from '@eva-design/eva'
 import { ApplicationProvider } from '@ui-kitten/components'
-import { AppNavigator } from './components/AppNavigator'
-import { Provider } from 'react-redux'
-import { store } from './redux/store'
+import React, { useEffect, useState } from 'react'
 import 'react-native-get-random-values'
+import { Provider } from 'react-redux'
+import { AppNavigator } from './components/AppNavigator'
+import { store } from './redux/store'
 import { LoaderView } from './views'
 
 const App = (): Element => {

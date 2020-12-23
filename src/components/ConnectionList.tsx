@@ -1,21 +1,39 @@
-import React, { ReactElement } from 'react'
-import { StyleSheet } from 'react-native'
 import { Divider, List, ListItem } from '@ui-kitten/components'
 import { ConnectionRecord } from 'aries-framework-javascript'
+import React, { ReactElement } from 'react'
+import { StyleSheet } from 'react-native'
 
-type ConnectionListProps = Array<ConnectionRecord>
+type ConnectionListProps = {
+  connectionRecords: Array<ConnectionRecord>
+}
 
-const ConnectionList = (props: ConnectionListProps): Element => {
+const ConnectionList = (props: ConnectionListProps) => {
   const renderItem = ({ item, index }): ReactElement => (
-    <ListItem title={`${item.title} ${index + 1}`} description={`${item.description} ${index + 1}`} />
+    <ListItem style={styles.item} title={item.tags.title} description={`${item.did} ${index + 1}`} />
   )
 
-  return <List style={styles.container} data={props} ItemSeparatorComponent={Divider} renderItem={renderItem} />
+  return (
+    <List
+      // style={}
+      // contentContainerStyle={{ ...styles.contentContainer }}
+      data={props.connectionRecords}
+      ItemSeparatorComponent={Divider}
+      renderItem={renderItem}
+    />
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    maxHeight: 200,
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+    // maxHeight: 200,
+  },
+  item: {
+    // backgroundColor: 'red',
+    // width: '80%',
+    // backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    // borderRadius: 40,
   },
 })
 
