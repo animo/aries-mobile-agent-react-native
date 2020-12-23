@@ -1,40 +1,23 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Layout, Text } from '@ui-kitten/components';
+import React from 'react'
+import { RNCamera } from 'react-native-camera'
+import { BaseView } from './BaseView'
 
-import { RNCamera } from 'react-native-camera';
-
-const ScannerView = () => {
-  let camera: RNCamera = null;
+const ScannerView = (): React.ReactElement => {
+  let camera: RNCamera = null
 
   return (
-    <Layout style={styles.container}>
-      <Text category="h5">QR Scanner</Text>
+    <BaseView viewTitle="Scan Invitation">
       <RNCamera
-        ref={ref => {
-          camera = ref;
+        ref={(ref): void => {
+          camera = ref
         }}
         style={{
           flex: 1,
           width: '100%',
         }}
       />
-    </Layout>
-  );
-};
+    </BaseView>
+  )
+}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  text: {
-    margin: 2,
-  },
-});
-
-export { ScannerView };
+export { ScannerView }

@@ -1,12 +1,11 @@
-import React from 'react';
-import LottieView from 'lottie-react-native';
-import loaderAnimation from '../../assets/17021-id-scan.json';
-import { Layout, StyleService, Text, useStyleSheet, useTheme } from '@ui-kitten/components';
-import { StyleSheet, View } from 'react-native';
-import { withStyles } from '@ui-kitten/components';
+import React from 'react'
+import LottieView from 'lottie-react-native'
+import loaderAnimation from '../../assets/17021-id-scan.json'
+import { Layout, StyleService, Text, useStyleSheet } from '@ui-kitten/components'
+import { View } from 'react-native'
 
-const LoaderView = () => {
-  const styles = useStyleSheet(themedStyles);
+const LoaderView: React.FC = (): React.ReactElement => {
+  const styles = useStyleSheet(themedStyles)
 
   return (
     <Layout style={styles.container}>
@@ -21,8 +20,8 @@ const LoaderView = () => {
       <LottieView style={styles.loaderAnimation} source={loaderAnimation} autoPlay loop />
       <Text style={styles.footerText}>Made with ♥️ by the Hyperledger Community</Text>
     </Layout>
-  );
-};
+  )
+}
 
 const themedStyles = StyleService.create({
   container: {
@@ -46,6 +45,6 @@ const themedStyles = StyleService.create({
   footerText: {
     marginBottom: 150,
   },
-});
+})
 
-export { LoaderView };
+export { LoaderView }

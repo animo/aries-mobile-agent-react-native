@@ -1,15 +1,14 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Layout, Text } from '@ui-kitten/components'
+import React from 'react'
+import { StyleSheet } from 'react-native'
 
-import { Layout, Text } from '@ui-kitten/components';
-
-const CredentialsView = () => {
+const CredentialsView: React.FC = (): React.ReactElement => {
   return (
     <Layout style={styles.container}>
       <Text category="h5">Credentials</Text>
     </Layout>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -23,6 +22,6 @@ const styles = StyleSheet.create({
   text: {
     margin: 2,
   },
-});
+})
 
-export { CredentialsView };
+export { CredentialsView }

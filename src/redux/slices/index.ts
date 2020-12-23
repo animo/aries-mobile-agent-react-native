@@ -1,3 +1,3 @@
-import { connectionsReducer } from './connectionSlice';
+import { connectionsReducer } from './connectionSlice'
 
-export { connectionsReducer };
+export { connectionsReducer }

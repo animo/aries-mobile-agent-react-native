@@ -1,13 +1,13 @@
-import React from 'react';
-import { CredentialRecord } from 'aries-framework-javascript';
-import { StyleSheet, View, Text } from 'react-native';
+import { CredentialRecord } from 'aries-framework-javascript'
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 
 type CredentialProps = {
-  credential: CredentialRecord;
-};
+  credential: CredentialRecord
+}
 
-const Credential = ({ credential }: CredentialProps) => {
-  const value = JSON.parse(credential.getValue());
+const Credential = ({ credential }: CredentialProps): React.ReactElement => {
+  const value = JSON.parse(credential.getValue())
   return (
     <View style={styles.credentialCard}>
       <Text>ID: {credential.id}</Text>
@@ -20,11 +20,11 @@ const Credential = ({ credential }: CredentialProps) => {
             <Text>
               {attr['name']}: {attr['value']}
             </Text>
-          );
+          )
         })}
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   credentialCard: {
@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
-});
+})
 
-export default Credential;
+export default Credential

@@ -10,6 +10,8 @@ module.exports = {
   rules: {
     '@typescript-eslint/explicit-function-return-type': 'error',
     'no-console': 'error',
+    semi: ['error', 'never'],
+    // '@typescript-eslint/semi': ['error', 'never'],
   },
   overrides: [
     {
@@ -19,4 +21,4 @@ module.exports = {
       },
     },
   ],
-};
+}

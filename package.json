@@ -8,7 +8,7 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint --ignore-path .gitignore '**/*.+(js|ts|jsx|tsx)'",
+    "lint": "eslint --ignore-path .gitignore 'src/**/*.+(ts|tsx)'",
     "prettier": "prettier '**/*.+(json|md|yml|yaml)'",
     "format": "yarn prettier --write",
     "check-format": "yarn prettier --list-different"

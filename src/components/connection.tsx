@@ -1,12 +1,12 @@
-import React from 'react';
-import { ConnectionRecord } from 'aries-framework-javascript';
-import { StyleSheet, View, Text } from 'react-native';
+import { ConnectionRecord } from 'aries-framework-javascript'
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 
 type ConnectionProps = {
-  connection: ConnectionRecord;
-};
+  connection: ConnectionRecord
+}
 
-const Connection = ({ connection }: ConnectionProps) => {
+const Connection = ({ connection }: ConnectionProps): React.ReactElement => {
   return (
     <View style={styles.connectionCard}>
       <Text>Alias: {connection.alias}</Text>
@@ -15,8 +15,8 @@ const Connection = ({ connection }: ConnectionProps) => {
       <Text>Their DID: {connection.theirDid}</Text>
       <Text>State: {connection.state}</Text>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   connectionCard: {
@@ -25,6 +25,6 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
   },
-});
+})
 
-export default Connection;
+export default Connection
