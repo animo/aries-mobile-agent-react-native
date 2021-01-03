@@ -1,5 +1,6 @@
-import { ConnectionRecord } from 'aries-framework-javascript'
+import { ConnectionEventType, ConnectionRecord } from 'aries-framework-javascript'
 import { ConnectionInvitationMessage } from 'aries-framework-javascript/build/lib/protocols/connections/ConnectionInvitationMessage'
+import { ConnectionStateChangedEvent } from 'aries-framework-javascript/build/lib/protocols/connections/ConnectionService'
 import { ConnectionRole } from 'aries-framework-javascript/build/lib/protocols/connections/domain/ConnectionRole'
 import { ConnectionState } from 'aries-framework-javascript/build/lib/protocols/connections/domain/ConnectionState'
 import {
@@ -9,7 +10,8 @@ import {
   PublicKeyType,
   Service,
 } from 'aries-framework-javascript/build/lib/protocols/connections/domain/DidDoc'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useAgent } from '../agent/AgentProvider'
 import { ConnectionList } from '../components/ConnectionList'
 import { BaseView } from './BaseView'
 
@@ -51,7 +53,31 @@ function createMockConnectionRecords(): ConnectionRecord[] {
 }
 
 const ConnectionsView: React.FC = (): React.ReactElement => {
-  const connections = createMockConnectionRecords()
+  const [connections, setConnections] = useState<ConnectionRecord[]>([])
+
+  const { agent } = useAgent()
+
+  async function fetchConnections(): Promise<void> {
+    setConnections(await agent.connections.getAll())
+    console.log(connections)
+  }
+
+  useEffect(() => {
+    fetchConnections()
+    agent.connections.events().on(ConnectionEventType.StateChanged, (event: ConnectionStateChangedEvent) => {
+      console.log(
+        `connection event for: ${event.connection.id}, prev state -> ${event.prevState} new state: ${
+          event.connection.state
+        }`
+      )
+
+      if (event.prevState === ConnectionState.Invited && event.connection.state === ConnectionState.Requested) {
+        // We can assume here that this is a 'new' connection received with the autoAccept flag enabled
+        console.log('new connection received')
+        setConnections(connections => [...connections, event.connection])
+      }
+    })
+  }, [])
 
   return (
     <BaseView viewTitle="connections">

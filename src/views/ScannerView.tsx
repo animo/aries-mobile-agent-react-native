@@ -1,30 +1,65 @@
-import React from 'react'
-import { StyleSheet } from 'react-native'
-import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
+import { Button, Icon, Input } from '@ui-kitten/components'
+import { decodeInvitationFromUrl } from 'aries-framework-javascript'
+import { ConnectionInvitationMessage } from 'aries-framework-javascript/build/lib/protocols/connections/ConnectionInvitationMessage'
+import React, { useState } from 'react'
+import { Keyboard, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
+import { useAgent } from '../agent/AgentProvider'
+import { InvitationModal } from '../components'
 import { BaseView } from './BaseView'
 
-const ScannerView = (): React.ReactElement => {
-  let camera: RNCamera = null
-
-  function onScan(barcode: BarCodeReadEvent): void {
-    if (barcode.type != 'qr') return
-    console.log(barcode.data)
-
-    // const invite: ConnectionInvitationMessage = new ConnectionInvitationMessage(barcode.data);
+const ScannerView = ({ navigation }): React.ReactElement => {
+  const [invitationUrl, setInvitationUrl] = useState('')
+  const [modalVisible, setModalVisible] = useState(false)
+  const [invitationObject, setInvitationObject] = useState<ConnectionInvitationMessage | undefined>(undefined)
+  const { agent } = useAgent()
+  async function onPress(): Promise<void> {
+    try {
+      Keyboard.dismiss()
+      const invitation = await decodeInvitationFromUrl(invitationUrl)
+      setInvitationObject(invitation)
+      setModalVisible(true)
+    } catch (e) {
+      console.error('Something went wrong while decoding invitation url')
+      throw e
+    }
   }
+
+  async function onAccept(): Promise<void> {
+    await agent.connections.receiveInvitation(invitationObject.toJSON(), { autoAcceptConnection: true })
+    setModalVisible(false)
+    navigation.navigate('Connections')
+  }
+
+  async function onDecline(): Promise<void> {
+    setModalVisible(false)
+    setInvitationObject(undefined)
+  }
+
+  const renderIcon = props => (
+    <TouchableWithoutFeedback onPress={(): void => setInvitationUrl('')}>
+      <Icon name="close-circle-outline" />
+    </TouchableWithoutFeedback>
+  )
 
   return (
     <BaseView viewTitle="Scan Invitation">
-      <RNCamera
-        onBarCodeRead={onScan}
-        ref={ref => {
-          camera = ref
-        }}
-        style={{
-          flex: 1,
-          width: '100%',
-        }}
-      />
+      <View>
+        <Input
+          placeholder="insert invitation url"
+          value={invitationUrl}
+          onChangeText={(nextValue): void => setInvitationUrl(nextValue)}
+          // accessoryRight={renderIcon}
+        />
+        <Button onPress={onPress}>Go</Button>
+      </View>
+      {modalVisible && (
+        <InvitationModal
+          visible={modalVisible}
+          onDecline={onDecline}
+          onAccept={onAccept}
+          invitation={invitationObject}
+        />
+      )}
     </BaseView>
   )
 }

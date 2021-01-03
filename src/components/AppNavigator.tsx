@@ -19,7 +19,7 @@ const BottomTabBar = ({ navigation, state }): React.ReactElement => (
 
 const TabNavigator: React.FC = (): React.ReactElement => (
   <Navigator tabBar={(props): React.ReactElement => <BottomTabBar {...props} />}>
-    <Screen name="Connections " component={ConnectionsView} />
+    <Screen name="Connections" component={ConnectionsView} />
     <Screen name="Credentials" component={CredentialsView} />
     <Screen name="Scanner" component={ScannerView} />
   </Navigator>

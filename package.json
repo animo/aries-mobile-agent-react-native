@@ -19,6 +19,7 @@
     "@react-navigation/native": "^5.8.10",
     "@reduxjs/toolkit": "^1.5.0",
     "@ui-kitten/components": "^5.0.0",
+    "@ui-kitten/eva-icons": "^5.0.0",
     "aries-framework-javascript": "file:aries-framework-javascript.tgz",
     "axios": "^0.21.0",
     "lottie-ios": "3.1.8",
