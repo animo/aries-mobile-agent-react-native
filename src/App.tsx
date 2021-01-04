@@ -13,7 +13,7 @@ const App = (): Element => {
     <>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={eva.dark}>
-        <AgentProvider agentConfig={{ mediatorUrl: 'https://d6cbf905bd70.ngrok.io' }}>
+        <AgentProvider agentConfig={{ mediatorUrl: 'https://51eb7b96ad15.ngrok.io' }}>
           <Provider store={store}>
             <RootView />
           </Provider>

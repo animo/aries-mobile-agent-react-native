@@ -1,0 +1,28 @@
+version: '3.5'
+
+services:
+  acme-register-seed:
+    image: byrnedo/alpine-curl
+    command: >-
+      ${LEDGER_URL}/register
+      -X POST
+      -d '{"alias":"${ACME_LABEL}","seed":"${ACME_SEED}","role":"TRUST_ANCHOR"}'
+
+  acme-aca-py:
+    image: bcgovimages/aries-cloudagent:py36-1.15-0_0.5.4
+    depends_on:
+      - acme-register-seed
+      - acme-aca-py-tunnel-http
+    ports:
+      - '6002:6002'
+      - '6000'
+    entrypoint: /bin/bash -c 'export DOMAIN=$$(curl -s acme-aca-py-tunnel-http:4040/api/tunnels/command_line | grep -o "https:\/\/.*\.eu\.ngrok\.io") && aca-py start --endpoint "$$DOMAIN" --admin 0.0.0.0 6002 --admin-insecure-mode --label "Workshop Acme Agent" --inbound-transport http 0.0.0.0 6000 --outbound-transport http --genesis-url ${LEDGER_URL}/genesis --wallet-type indy --wallet-name "Acme Wallet" --wallet-key AcmeWallet0000000 --seed ${ACME_SEED} --auto-accept-requests --auto-ping-connection --auto-respond-credential-proposal --auto-respond-credential-offer --auto-respond-credential-request --auto-store-credential --auto-respond-presentation-proposal --auto-respond-presentation-request --auto-verify-presentation --invite --invite-role admin --invite-label "${ACME_LABEL}" --debug-connections --debug-credentials --debug-presentations --enable-undelivered-queue'
+
+  acme-aca-py-tunnel-http:
+    image: wernight/ngrok
+    ports:
+      - '4040'
+    environment:
+      - NGROK_REGION=eu
+      - NGROK_PORT=acme-aca-py:6000
+      - NGROK_BINDTLS=true

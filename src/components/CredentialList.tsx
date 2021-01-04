@@ -1,12 +1,12 @@
 import { Divider, List, Text } from '@ui-kitten/components'
-import { ConnectionRecord } from 'aries-framework-javascript'
-import { ConnectionInvitationMessage } from 'aries-framework-javascript/build/lib/protocols/connections/ConnectionInvitationMessage'
+import { CredentialRecord } from 'aries-framework-javascript'
 import React, { ReactElement } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
+import { useAgent } from '../agent/AgentProvider'
 
-type ConnectionListProps = {
-  connectionRecords: Array<ConnectionRecord>
-  onPress: (connection: ConnectionRecord) => Promise<void>
+type CredentialListProps = {
+  credentialRecords: CredentialRecord[]
+  showCredentilModal: (record: CredentialRecord) => void
 }
 
 type ListRowProps = {
@@ -30,22 +30,30 @@ const ListRow = (props: ListRowProps) => {
   )
 }
 
-const ConnectionList = (props: ConnectionListProps) => {
+type RenderProps = {
+  item: CredentialRecord
+  index: number
+}
+
+const CredentialList = (props: CredentialListProps) => {
   // const renderItem = ({ item, index }): ReactElement => (
   //   <ListItem style={styles.item} title={item.id} description={item.did} />
   // )
 
-  const renderItem = ({ item, index }): ReactElement => (
+  const { agent } = useAgent()
+
+  const renderItem = (unit: RenderProps): ReactElement => (
     <TouchableOpacity
       style={{ marginVertical: 5, marginHorizontal: 10 }}
-      onPress={async (): Promise<void> => await props.onPress(item)}
+      onPress={() => props.showCredentilModal(unit.item)}
+      // onPress={() => console.log(unit.item)}
     >
       <View style={{ width: '100%' }}>
         <View style={{ flexDirection: 'column' }}>
-          <ListRow title="id" value={item.id} />
-          <ListRow title="did" value={item.did} />
+          <ListRow title="id" value={unit.item.id} />
+          {/* <ListRow title="connectionId" value={item.connectionId} /> */}
 
-          <Text style={{ alignSelf: 'flex-end' }}>{item.state}</Text>
+          <Text style={{ alignSelf: 'flex-end' }}>{unit.item.state}</Text>
           {/* <Text category="label">{item.did}</Text> */}
         </View>
       </View>
@@ -56,25 +64,11 @@ const ConnectionList = (props: ConnectionListProps) => {
     <List
       // style={}
       // contentContainerStyle={{ ...styles.contentContainer }}
-      data={props.connectionRecords}
+      data={props.credentialRecords}
       ItemSeparatorComponent={Divider}
       renderItem={renderItem}
     />
   )
 }
 
-const styles = StyleSheet.create({
-  contentContainer: {
-    flex: 1,
-    alignItems: 'center',
-    // maxHeight: 200,
-  },
-  item: {
-    // backgroundColor: 'red',
-    // width: '80%',
-    // backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    // borderRadius: 40,
-  },
-})
-
-export { ConnectionList }
+export { CredentialList }

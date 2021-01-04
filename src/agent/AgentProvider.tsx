@@ -43,7 +43,6 @@ const AgentProvider = (props: AgentContextProps) => {
     }
     const newAgent = new Agent(agentConfig, inbound, outbound, indy)
     console.log('agent instance created')
-
     await newAgent.init()
 
     setAgent(newAgent)

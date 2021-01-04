@@ -14,6 +14,9 @@ class HttpOutboundTransporter implements OutboundTransporter {
       if (receiveReply) {
         const response = await fetch(endpoint, {
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/ssi-agent-wire',
+          },
           body: JSON.stringify(payload),
         })
 
@@ -24,6 +27,9 @@ class HttpOutboundTransporter implements OutboundTransporter {
       } else {
         await fetch(endpoint, {
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/ssi-agent-wire',
+          },
           body: JSON.stringify(payload),
         })
       }
