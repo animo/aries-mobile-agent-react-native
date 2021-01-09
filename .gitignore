@@ -56,7 +56,7 @@ buck-out/
 *.jsbundle
 
 # CocoaPods
-/ios/Pods/
+# /ios/Pods/
 
 ### Emacs ###
 # -*- mode: gitignore; -*-
@@ -108,3 +108,6 @@ flycheck_*.el
 # network security
 /network-security.data
 development-environment
+
+# allow Indy.framework
+!/ios/Pods/Frameworks/Indy.framework
