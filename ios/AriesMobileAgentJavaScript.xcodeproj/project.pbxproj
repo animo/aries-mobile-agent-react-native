@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* AriesMobileAgentJavaScriptTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* AriesMobileAgentJavaScriptTests.m */; };
-		071BDF7B249BFE31C0677A27 /* libPods-AriesMobileAgentJavaScriptTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4A061E92D5389F66C5E0C44 /* libPods-AriesMobileAgentJavaScriptTests.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -18,7 +17,11 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* AriesMobileAgentJavaScriptTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* AriesMobileAgentJavaScriptTests.m */; };
 		374B43D1D89FD7A879DE9534 /* libPods-AriesMobileAgentJavaScript-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 922A8FD9377F5DBC90CE8B31 /* libPods-AriesMobileAgentJavaScript-tvOS.a */; };
-		DF85A68CAF3403D43F3BACAF /* libPods-AriesMobileAgentJavaScript.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B6C75FA2B0D693B380BD642 /* libPods-AriesMobileAgentJavaScript.a */; };
+		4F60CD7286F864A99A7659BB /* libPods-AriesMobileAgentJavaScript.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 543906A37AE1E9EE4FF4C7A2 /* libPods-AriesMobileAgentJavaScript.a */; };
+		9FE341C1C5F58018FFC00E4E /* libPods-AriesMobileAgentJavaScriptTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD72C931A31F20A76F21A0D0 /* libPods-AriesMobileAgentJavaScriptTests.a */; };
+		F21F070A25AA0F04007899F7 /* Indy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F21F070925AA0F04007899F7 /* Indy.framework */; };
+		F21F070B25AA0F04007899F7 /* Indy.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F21F070925AA0F04007899F7 /* Indy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F21F081025AA12D7007899F7 /* AriesMobileAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21F080F25AA12D7007899F7 /* AriesMobileAgent.swift */; };
 		FAB5E1AFBE195E05BDE6C035 /* libPods-AriesMobileAgentJavaScript-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 142683CB192BD5D854F232A4 /* libPods-AriesMobileAgentJavaScript-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +42,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		F21F06AA25AA0BB5007899F7 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F21F070B25AA0F04007899F7 /* Indy.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* AriesMobileAgentJavaScriptTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AriesMobileAgentJavaScriptTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,17 +73,20 @@
 		142683CB192BD5D854F232A4 /* libPods-AriesMobileAgentJavaScript-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AriesMobileAgentJavaScript-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E893042938B6C101F21D749 /* Pods-AriesMobileAgentJavaScriptTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesMobileAgentJavaScriptTests.release.xcconfig"; path = "Target Support Files/Pods-AriesMobileAgentJavaScriptTests/Pods-AriesMobileAgentJavaScriptTests.release.xcconfig"; sourceTree = "<group>"; };
 		2078CD217587F2D28143ABC2 /* Pods-AriesMobileAgentJavaScript-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesMobileAgentJavaScript-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-AriesMobileAgentJavaScript-tvOSTests/Pods-AriesMobileAgentJavaScript-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		2B6C75FA2B0D693B380BD642 /* libPods-AriesMobileAgentJavaScript.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AriesMobileAgentJavaScript.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* AriesMobileAgentJavaScript-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AriesMobileAgentJavaScript-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* AriesMobileAgentJavaScript-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AriesMobileAgentJavaScript-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B2500DD926BA3E6DB8C0234 /* Pods-AriesMobileAgentJavaScriptTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesMobileAgentJavaScriptTests.debug.xcconfig"; path = "Target Support Files/Pods-AriesMobileAgentJavaScriptTests/Pods-AriesMobileAgentJavaScriptTests.debug.xcconfig"; sourceTree = "<group>"; };
+		543906A37AE1E9EE4FF4C7A2 /* libPods-AriesMobileAgentJavaScript.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AriesMobileAgentJavaScript.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E7EA8309BE115615C925F3A /* Pods-AriesMobileAgentJavaScript-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesMobileAgentJavaScript-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-AriesMobileAgentJavaScript-tvOSTests/Pods-AriesMobileAgentJavaScript-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8A0B5315DA71F0B49CE26746 /* Pods-AriesMobileAgentJavaScript-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesMobileAgentJavaScript-tvOS.release.xcconfig"; path = "Target Support Files/Pods-AriesMobileAgentJavaScript-tvOS/Pods-AriesMobileAgentJavaScript-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		922A8FD9377F5DBC90CE8B31 /* libPods-AriesMobileAgentJavaScript-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AriesMobileAgentJavaScript-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967CCE7CCA5BE518835E1052 /* Pods-AriesMobileAgentJavaScript.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesMobileAgentJavaScript.release.xcconfig"; path = "Target Support Files/Pods-AriesMobileAgentJavaScript/Pods-AriesMobileAgentJavaScript.release.xcconfig"; sourceTree = "<group>"; };
+		BD72C931A31F20A76F21A0D0 /* libPods-AriesMobileAgentJavaScriptTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AriesMobileAgentJavaScriptTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		F4A061E92D5389F66C5E0C44 /* libPods-AriesMobileAgentJavaScriptTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AriesMobileAgentJavaScriptTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F21F070925AA0F04007899F7 /* Indy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Indy.framework; path = Pods/Frameworks/Indy.framework; sourceTree = "<group>"; };
+		F21F080E25AA12D7007899F7 /* AriesMobileAgentJavaScript-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AriesMobileAgentJavaScript-Bridging-Header.h"; sourceTree = "<group>"; };
+		F21F080F25AA12D7007899F7 /* AriesMobileAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AriesMobileAgent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				071BDF7B249BFE31C0677A27 /* libPods-AriesMobileAgentJavaScriptTests.a in Frameworks */,
+				9FE341C1C5F58018FFC00E4E /* libPods-AriesMobileAgentJavaScriptTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +102,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DF85A68CAF3403D43F3BACAF /* libPods-AriesMobileAgentJavaScript.a in Frameworks */,
+				F21F070A25AA0F04007899F7 /* Indy.framework in Frameworks */,
+				4F60CD7286F864A99A7659BB /* libPods-AriesMobileAgentJavaScript.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,7 +138,6 @@
 				4B2500DD926BA3E6DB8C0234 /* Pods-AriesMobileAgentJavaScriptTests.debug.xcconfig */,
 				1E893042938B6C101F21D749 /* Pods-AriesMobileAgentJavaScriptTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -155,12 +175,13 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F21F070925AA0F04007899F7 /* Indy.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				2B6C75FA2B0D693B380BD642 /* libPods-AriesMobileAgentJavaScript.a */,
 				922A8FD9377F5DBC90CE8B31 /* libPods-AriesMobileAgentJavaScript-tvOS.a */,
 				142683CB192BD5D854F232A4 /* libPods-AriesMobileAgentJavaScript-tvOSTests.a */,
-				F4A061E92D5389F66C5E0C44 /* libPods-AriesMobileAgentJavaScriptTests.a */,
+				543906A37AE1E9EE4FF4C7A2 /* libPods-AriesMobileAgentJavaScript.a */,
+				BD72C931A31F20A76F21A0D0 /* libPods-AriesMobileAgentJavaScriptTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -175,12 +196,14 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				F21F080F25AA12D7007899F7 /* AriesMobileAgent.swift */,
 				13B07FAE1A68108700A75B9A /* AriesMobileAgentJavaScript */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* AriesMobileAgentJavaScriptTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				00A6D63DDDDAEE1F79C4D37A /* Pods */,
+				F21F080E25AA12D7007899F7 /* AriesMobileAgentJavaScript-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -230,6 +253,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				F21F06AA25AA0BB5007899F7 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -290,10 +314,16 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = UG66RMK356;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = UG66RMK356;
+						LastSwiftMigration = 1230;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = UG66RMK356;
 						ProvisioningStyle = Automatic;
 					};
 					2D02E48F1E0B4A5D006451C7 = {
@@ -308,6 +338,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -529,6 +560,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				F21F081025AA12D7007899F7 /* AriesMobileAgent.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -582,7 +614,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4B2500DD926BA3E6DB8C0234 /* Pods-AriesMobileAgentJavaScriptTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = UG66RMK356;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -605,8 +639,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1E893042938B6C101F21D749 /* Pods-AriesMobileAgentJavaScriptTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = UG66RMK356;
 				INFOPLIST_FILE = AriesMobileAgentJavaScriptTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -626,17 +662,28 @@
 			baseConfigurationReference = 0C0019C55DFB52D9BBC9CCEE /* Pods-AriesMobileAgentJavaScript.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = UG66RMK356;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/Frameworks",
+				);
 				INFOPLIST_FILE = AriesMobileAgentJavaScript/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.hyperledger.ama-rn";
 				PRODUCT_NAME = AriesMobileAgentJavaScript;
+				SWIFT_OBJC_BRIDGING_HEADER = "AriesMobileAgentJavaScript-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -646,16 +693,26 @@
 			baseConfigurationReference = 967CCE7CCA5BE518835E1052 /* Pods-AriesMobileAgentJavaScript.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UG66RMK356;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/Frameworks",
+				);
 				INFOPLIST_FILE = AriesMobileAgentJavaScript/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.hyperledger.ama-rn";
 				PRODUCT_NAME = AriesMobileAgentJavaScript;
+				SWIFT_OBJC_BRIDGING_HEADER = "AriesMobileAgentJavaScript-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -671,6 +728,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = UG66RMK356;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "AriesMobileAgentJavaScript-tvOS/Info.plist";
@@ -700,6 +758,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = UG66RMK356;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "AriesMobileAgentJavaScript-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
