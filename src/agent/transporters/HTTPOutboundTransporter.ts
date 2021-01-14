@@ -21,7 +21,6 @@ class HttpOutboundTransporter implements OutboundTransporter {
         })
 
         const data = await response.text()
-
         const wireMessage = JSON.parse(data)
         return wireMessage
       } else {
@@ -34,7 +33,7 @@ class HttpOutboundTransporter implements OutboundTransporter {
         })
       }
     } catch (e) {
-      // console.log('error sending message', JSON.stringify(e));
+      console.error('error sending message', e)
       throw e
     }
   }

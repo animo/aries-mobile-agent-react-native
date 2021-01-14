@@ -13,19 +13,19 @@ class PollingInboundTransporter implements InboundTransporter {
   }
 
   public async registerMediator(agent: Agent): Promise<void> {
-    console.log('fetching mediator url')
-    const mediatorUrl = agent.getMediatorUrl()
-    console.log(`got mediator url: ${mediatorUrl}, fetching response`)
-    const mediatorInvitationUrlResponse = await axios.get(`${mediatorUrl}/invitation`)
-    console.log(`got invite response: ${mediatorInvitationUrlResponse}`)
-    const response = await axios.get(`${mediatorUrl}/`)
-    console.log(`got response: ${response}`)
-    const { verkey: mediatorVerkey } = response.data
-    await agent.routing.provision({
-      verkey: mediatorVerkey,
-      invitationUrl: mediatorInvitationUrlResponse.data,
-    })
-    this.pollDownloadMessages(agent)
+    try {
+      const mediatorUrl = agent.getMediatorUrl()
+      const mediatorInvitationUrlResponse = await axios.get(`${mediatorUrl}/invitation`)
+      const response = await axios.get(`${mediatorUrl}/`)
+      const { verkey: mediatorVerkey } = response.data
+      await agent.routing.provision({
+        verkey: mediatorVerkey,
+        invitationUrl: mediatorInvitationUrlResponse.data,
+      })
+      this.pollDownloadMessages(agent)
+    } catch (error) {
+      console.warn(error)
+    }
   }
 
   private pollDownloadMessages(agent: Agent): void {
@@ -35,9 +35,6 @@ class PollingInboundTransporter implements InboundTransporter {
         const messages = [...downloadedMessages]
         while (messages && messages.length > 0) {
           const message = messages.shift()
-          console.log('INBOUND TRANSPORT: RECEIVED MESSAGE')
-          console.log(message)
-
           await agent.receiveMessage(message)
         }
       },

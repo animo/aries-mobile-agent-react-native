@@ -50,7 +50,11 @@ const AgentProvider = (props: AgentContextProps) => {
   }
 
   useEffect(() => {
-    initAgent()
+    try {
+      initAgent()
+    } catch (e) {
+      console.warn(e)
+    }
   }, [])
 
   return <AgentContext.Provider value={{ loading, agent }}>{props.children}</AgentContext.Provider>
