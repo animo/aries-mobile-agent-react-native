@@ -34,6 +34,7 @@ const themedStyles = StyleService.create({
   },
   header: {
     paddingVertical: 5,
+    marginBottom: 10,
   },
   viewTitle: {
     marginVertical: 5,

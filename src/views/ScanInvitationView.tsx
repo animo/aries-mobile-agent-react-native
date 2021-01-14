@@ -1,9 +1,10 @@
-import { Button, Icon, Input } from '@ui-kitten/components'
 import { decodeInvitationFromUrl } from 'aries-framework-javascript'
 import { ConnectionInvitationMessage } from 'aries-framework-javascript/build/lib/protocols/connections/ConnectionInvitationMessage'
-import React, { useState } from 'react'
-import { Keyboard, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
-import { RNCamera } from 'react-native-camera'
+import React, { useEffect, useRef, useState } from 'react'
+import { Alert, StyleSheet, View } from 'react-native'
+import { BarCodeReadEvent, BarCodeType, RNCamera } from 'react-native-camera'
+import Permissions from 'react-native-permissions'
+
 import { useAgent } from '../agent/AgentProvider'
 import { InvitationModal } from '../components'
 import { BaseView } from './BaseView'
@@ -12,11 +13,49 @@ const ScannerView = ({ navigation }): React.ReactElement => {
   const [invitationUrl, setInvitationUrl] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
   const [invitationObject, setInvitationObject] = useState<ConnectionInvitationMessage | undefined>(undefined)
+  let qrScanned = false
+
+  let cameraRef = useRef(null)
   const { agent } = useAgent()
 
-  async function onScan(scanResult: any): Promise<void> {
-    console.warn(scanResult.type)
-    console.warn(scanResult.data)
+  useEffect(() => {
+    Permissions.check('ios.permission.CAMERA')
+  }, [])
+
+  async function showInvitationAlert(invite: ConnectionInvitationMessage, newInvite = false): Promise<void> {
+    Alert.alert(
+      'Connection Invitation',
+      `ID:\t\t${invite.id}\n\nEndpoint:\t\t${invite.serviceEndpoint}`,
+      [
+        {
+          text: 'Decline',
+          style: 'cancel',
+          onPress: async (): Promise<void> => await onDecline(),
+        },
+        { text: 'Accept', onPress: async (): Promise<void> => await onAccept(invite) },
+      ],
+      {
+        cancelable: true,
+      }
+    )
+  }
+
+  async function onScan(scanResult: BarCodeReadEvent): Promise<void> {
+    console.log(scanResult)
+
+    if (qrScanned === true) return
+
+    console.log('hihi')
+    qrScanned = true
+
+    if (scanResult.data === null) {
+      qrScanned = false
+      return
+    }
+
+    const invitation = await decodeInvitationFromUrl(scanResult.data)
+
+    await showInvitationAlert(invitation)
   }
 
   // try {
@@ -30,36 +69,35 @@ const ScannerView = ({ navigation }): React.ReactElement => {
   // }
   // }
 
-  async function onAccept(): Promise<void> {
-    await agent.connections.receiveInvitation(invitationObject.toJSON(), { autoAcceptConnection: true })
-    setModalVisible(false)
+  async function onAccept(invite: ConnectionInvitationMessage): Promise<void> {
+    await agent.connections.receiveInvitation(invite.toJSON(), { autoAcceptConnection: true })
     navigation.navigate('Connections')
+    qrScanned = false
   }
 
   async function onDecline(): Promise<void> {
     setModalVisible(false)
     setInvitationObject(undefined)
+    qrScanned = false
   }
-
-  let camera = null
 
   return (
     <BaseView viewTitle="Scan Invitation">
-      <View>
+      <View style={styles.container}>
         <RNCamera
           ref={ref => {
-            camera = ref
+            cameraRef = ref
           }}
-          // defaultTouchToFocus
-          // flashMode={this.state.camera.flashMode}
-          // mirrorImage={false}
-          onBarCodeRead={scanResult => onScan(scanResult)}
-          // onFocusChanged={() => {}}
-          // onZoomChanged={() => {}}
-          permissionDialogTitle={'Permission to use camera'}
-          permissionDialogMessage={'We need your permission to use your camera phone'}
+          onBarCodeRead={(scanResult: BarCodeReadEvent): Promise<void> => onScan(scanResult)}
+          captureAudio={false}
+          androidCameraPermissionOptions={{
+            title: 'Permission to use camera',
+            message: 'We need your permission to use your camera',
+            buttonPositive: 'Ok',
+            buttonNegative: 'Cancel',
+          }}
           style={styles.preview}
-          type={camera.type}
+          type="back"
         />
       </View>
       {modalVisible && (
@@ -77,7 +115,8 @@ const ScannerView = ({ navigation }): React.ReactElement => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    margin: 30,
+    // alignItems: 'center',
   },
   row: {
     flexDirection: 'row',

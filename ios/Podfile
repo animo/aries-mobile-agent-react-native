@@ -34,6 +34,9 @@ target 'AriesMobileAgentJavaScript' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera/Permission-Camera.podspec"
+
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
   target 'AriesMobileAgentJavaScriptTests' do
@@ -45,12 +48,12 @@ target 'AriesMobileAgentJavaScript' do
   use_native_modules!
 end
 
-target 'AriesMobileAgentJavaScript-tvOS' do
-  # Pods for AriesMobileAgentJavaScript-tvOS
+# target 'AriesMobileAgentJavaScript-tvOS' do
+#   # Pods for AriesMobileAgentJavaScript-tvOS
 
-  target 'AriesMobileAgentJavaScript-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
+#   target 'AriesMobileAgentJavaScript-tvOSTests' do
+#     inherit! :search_paths
+#     # Pods for testing
+#   end
 
-end
+# end

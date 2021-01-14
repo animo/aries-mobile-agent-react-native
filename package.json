@@ -29,12 +29,14 @@
     "react-native-camera": "^3.40.0",
     "react-native-fs": "^2.16.6",
     "react-native-get-random-values": "^1.5.0",
+    "react-native-permissions": "^3.0.0",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.16.1",
     "react-native-svg": "^12.1.0",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
-    "rn-indy-sdk": "^0.1.7"
+    "rn-indy-sdk": "file:rn-indy-sdk-v0.1.7.tgz",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
@@ -42,6 +44,7 @@
     "@react-native-community/eslint-config": "^0.0.5",
     "@types/react": "^16.9.55",
     "@types/react-native": "^0.61.23",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.10.0",
     "@typescript-eslint/parser": "^4.10.0",
     "babel-jest": "^24.9.0",
