@@ -14,6 +14,8 @@ Aries Mobile Agent React Native is a mobile agent built on top of [Aries Framewo
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - [React Native Development Environment](https://reactnative.dev/docs/environment-setup)
 
+> For iOS you will also need to install [CocoaPods](https://cocoapods.org/)
+
 Besides the prerequisites listed above, the mobile agent relies on an external mediator to receive messages. You can start a sample mediator from the Aries Framework JavaScript repo. Run the following to start two sample mediators:
 
 ```sh
@@ -52,21 +54,29 @@ const agent = await initAgent({
 });
 ```
 
-### Installing
+### Installation
+
+To install the dependencies, run:
 
 ```sh
-# Install dependencies
 yarn install
+pod install --project-directory=ios/ # needed for iOS
+
 ```
 
 ### Running
-
-Only Android is supported at the moment. iOS support will be added soon.
+To start the agent, you may run the following commands:
 
 ```sh
-# Android
 yarn android
+
+# or for iOS
+# yarn ios --device
+
 ```
+
+> Note: the current Indy iOS build included in this repo is not compiled for the architectures required by the iOS simulator.
+> Therefore running this project in iOS will **only work on a physical device**
 
 ## Contributing
 
