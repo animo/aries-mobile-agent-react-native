@@ -51,7 +51,7 @@ Now update the `mediatorUrl` in `src/App.tsx` to the copied URL:
 ```ts
 const agent = await initAgent({
   mediatorUrl: 'https://90eab166f78c.ngrok.io',
-});
+})
 ```
 
 ### Installation
@@ -59,12 +59,13 @@ const agent = await initAgent({
 To install the dependencies, run:
 
 ```sh
-yarn install
+yarn **install**
 pod install --project-directory=ios/ # needed for iOS
 
 ```
 
 ### Running
+
 To start the agent, you may run the following commands:
 
 ```sh
