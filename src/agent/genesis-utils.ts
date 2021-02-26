@@ -9,10 +9,8 @@ async function storeGenesis(genesis: string, fileName: string): Promise<string> 
   return genesisPath
 }
 
-async function downloadGenesis(): Promise<string> {
-  const url = 'http://dev.greenlight.bcovrin.vonx.io/genesis'
-
-  const response = await axios.get(url)
+async function downloadGenesis(genesisUrl: string): Promise<string> {
+  const response = await axios.get(genesisUrl)
 
   return response.data
 }

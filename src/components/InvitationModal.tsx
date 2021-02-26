@@ -1,5 +1,5 @@
 import { Button, Card, Modal, Text } from '@ui-kitten/components'
-import { ConnectionInvitationMessage } from 'aries-framework-javascript/build/lib/protocols/connections/ConnectionInvitationMessage'
+import { ConnectionInvitationMessage } from 'aries-framework-javascript'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { KeyValueTextRow } from './KeyValueTextRow'
@@ -7,7 +7,7 @@ import { KeyValueTextRow } from './KeyValueTextRow'
 type InvitationModalProps = {
   visible: boolean
   invitation: ConnectionInvitationMessage
-  onAccept: () => void
+  onAccept: (invitation: ConnectionInvitationMessage) => Promise<void>
   onDecline: () => void
 }
 
@@ -34,7 +34,9 @@ const Footer: React.FC<FooterProps> = (props: FooterProps): React.ReactElement =
 )
 
 const InvitationModal: React.FC<InvitationModalProps> = (props: InvitationModalProps) => {
-  const CardFooter = (): React.ReactElement => <Footer onAccept={props.onAccept} onDecline={props.onDecline} />
+  const CardFooter = (): React.ReactElement => (
+    <Footer onAccept={() => props.onAccept(props.invitation)} onDecline={props.onDecline} />
+  )
   return (
     <Modal visible={props.visible} backdropStyle={styles.backdrop} onBackdropPress={props.onDecline}>
       <Card disabled={false} header={Header} footer={CardFooter}>

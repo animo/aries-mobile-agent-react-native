@@ -1,13 +1,7 @@
 import { Agent, InboundTransporter } from 'aries-framework-javascript'
-import { poll } from 'await-poll'
 import axios from 'axios'
 
 class PollingInboundTransporter implements InboundTransporter {
-  public stop: boolean
-
-  public constructor() {
-    this.stop = false
-  }
   public async start(agent: Agent): Promise<void> {
     await this.registerMediator(agent)
   }
@@ -24,23 +18,19 @@ class PollingInboundTransporter implements InboundTransporter {
       })
       this.pollDownloadMessages(agent)
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.warn(error)
     }
   }
 
   private pollDownloadMessages(agent: Agent): void {
-    poll(
-      async () => {
-        const downloadedMessages = await agent.routing.downloadMessages()
-        const messages = [...downloadedMessages]
-        while (messages && messages.length > 0) {
-          const message = messages.shift()
-          await agent.receiveMessage(message)
-        }
-      },
-      () => !this.stop,
-      5000
-    )
+    setInterval(async () => {
+      const downloadedMessages = await agent.routing.downloadMessages()
+
+      for (const message of downloadedMessages) {
+        await agent.receiveMessage(message)
+      }
+    }, 5000)
   }
 }
 

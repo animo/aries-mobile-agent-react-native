@@ -5,7 +5,7 @@ import { downloadGenesis, storeGenesis } from './genesis-utils'
 import { HttpOutboundTransporter, PollingInboundTransporter } from './transporters'
 
 type AgentContextProps = {
-  agentConfig: Partial<InitConfig>
+  agentConfig: Partial<InitConfig> & { genesisUrl?: string }
   children: React.ReactNode
 }
 
@@ -26,8 +26,11 @@ const AgentProvider = (props: AgentContextProps) => {
   const [loading, setLoading] = useState<boolean>(true)
 
   const initAgent = async (): Promise<void> => {
-    const genesis = await downloadGenesis()
-    const genesisPath = await storeGenesis(genesis, 'genesis.txn')
+    let genesisPath = props.agentConfig.genesisPath
+    if (props.agentConfig.genesisUrl) {
+      const genesis = await downloadGenesis(props.agentConfig.genesisUrl)
+      genesisPath = await storeGenesis(genesis, 'genesis.txn')
+    }
 
     const inbound = new PollingInboundTransporter()
     const outbound = new HttpOutboundTransporter()
@@ -38,10 +41,11 @@ const AgentProvider = (props: AgentContextProps) => {
       walletCredentials: { key: '123' },
       autoAcceptConnections: true,
       poolName: 'test-103',
-      genesisPath,
       ...props.agentConfig,
+      genesisPath,
     }
     const newAgent = new Agent(agentConfig, inbound, outbound, indy)
+    // eslint-disable-next-line no-console
     console.log('agent instance created')
     await newAgent.init()
 
@@ -53,6 +57,7 @@ const AgentProvider = (props: AgentContextProps) => {
     try {
       initAgent()
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.warn(e)
     }
   }, [])

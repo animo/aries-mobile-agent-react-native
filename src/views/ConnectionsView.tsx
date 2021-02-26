@@ -1,21 +1,4 @@
-import {
-  ConnectionEventType,
-  ConnectionRecord,
-  CredentialEventType,
-  CredentialRecord,
-} from 'aries-framework-javascript'
-import { ConnectionInvitationMessage } from 'aries-framework-javascript/build/lib/protocols/connections/ConnectionInvitationMessage'
-import { ConnectionStateChangedEvent } from 'aries-framework-javascript/build/lib/protocols/connections/ConnectionService'
-import { ConnectionRole } from 'aries-framework-javascript/build/lib/protocols/connections/domain/ConnectionRole'
-import { ConnectionState } from 'aries-framework-javascript/build/lib/protocols/connections/domain/ConnectionState'
-import {
-  Authentication,
-  DidDoc,
-  PublicKey,
-  PublicKeyType,
-  Service,
-} from 'aries-framework-javascript/build/lib/protocols/connections/domain/DidDoc'
-import { CredentialState } from 'aries-framework-javascript/build/lib/protocols/credentials/CredentialState'
+import { ConnectionEventType, ConnectionRecord, ConnectionStateChangedEvent } from 'aries-framework-javascript'
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-native'
 import { useAgent } from '../agent/AgentProvider'
@@ -51,32 +34,33 @@ const ConnectionsView: React.FC = (): React.ReactElement => {
   }
 
   const handleConnectionStateChange = (event: ConnectionStateChangedEvent) => {
+    // eslint-disable-next-line no-console
     console.log(
-      `connection event for: ${event.connection.id}, prev state -> ${event.prevState} new state: ${
-        event.connection.state
+      `connection event for: ${event.connectionRecord.id}, previous state -> ${event.previousState} new state: ${
+        event.connectionRecord.state
       }`
     )
 
-    const index = connections.findIndex((x: ConnectionRecord) => x.id === event.connection.id)
+    const index = connections.findIndex((x: ConnectionRecord) => x.id === event.connectionRecord.id)
 
     if (index === -1) {
-      setConnections(connections => [...connections, event.connection])
+      setConnections(connections => [...connections, event.connectionRecord])
       return
     }
 
     const newState = [...connections]
-    newState[index] = event.connection
+    newState[index] = event.connectionRecord
     setConnections(newState)
   }
 
   useEffect(() => {
-    agent.connections.events().removeAllListeners(ConnectionEventType.StateChanged)
-    agent.connections.events().on(ConnectionEventType.StateChanged, handleConnectionStateChange)
+    agent.connections.events.removeAllListeners(ConnectionEventType.StateChanged)
+    agent.connections.events.on(ConnectionEventType.StateChanged, handleConnectionStateChange)
   }, [connections])
 
   useEffect(() => {
     fetchConnections()
-    agent.connections.events().on(ConnectionEventType.StateChanged, handleConnectionStateChange)
+    agent.connections.events.on(ConnectionEventType.StateChanged, handleConnectionStateChange)
   }, [])
 
   return (

@@ -1,6 +1,5 @@
 import { Divider, List, Text } from '@ui-kitten/components'
 import { ConnectionRecord } from 'aries-framework-javascript'
-import { ConnectionInvitationMessage } from 'aries-framework-javascript/build/lib/protocols/connections/ConnectionInvitationMessage'
 import React, { ReactElement } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 
@@ -35,7 +34,7 @@ const ConnectionList = (props: ConnectionListProps) => {
   //   <ListItem style={styles.item} title={item.id} description={item.did} />
   // )
 
-  const renderItem = ({ item, index }): ReactElement => (
+  const renderItem = ({ item }): ReactElement => (
     <TouchableOpacity
       style={{ marginVertical: 5, marginHorizontal: 10 }}
       onPress={async (): Promise<void> => await props.onPress(item)}

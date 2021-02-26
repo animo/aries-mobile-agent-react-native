@@ -33,6 +33,7 @@ class HttpOutboundTransporter implements OutboundTransporter {
         })
       }
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error('error sending message', e)
       throw e
     }
