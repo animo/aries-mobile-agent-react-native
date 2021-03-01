@@ -21,6 +21,7 @@ class HttpOutboundTransporter implements OutboundTransporter {
         })
 
         const data = await response.text()
+        console.log('data: --------', data)
         const wireMessage = JSON.parse(data)
         return wireMessage
       } else {

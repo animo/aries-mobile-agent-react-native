@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import indy from 'rn-indy-sdk'
 import { downloadGenesis, storeGenesis } from './genesis-utils'
 import { HttpOutboundTransporter, PollingInboundTransporter } from './transporters'
+import { v4 as uuidv4 } from 'uuid'
 
 type AgentContextProps = {
   agentConfig: Partial<InitConfig> & { genesisUrl?: string }
@@ -34,11 +35,13 @@ const AgentProvider = (props: AgentContextProps) => {
 
     const inbound = new PollingInboundTransporter()
     const outbound = new HttpOutboundTransporter()
+    const id = uuidv4()
+    console.log(id)
 
     const agentConfig: InitConfig = {
-      label: 'javascript',
-      walletConfig: { id: 'wallet' },
-      walletCredentials: { key: '123' },
+      label: id,
+      walletConfig: { id },
+      walletCredentials: { key: id },
       autoAcceptConnections: true,
       poolName: 'test-103',
       ...props.agentConfig,

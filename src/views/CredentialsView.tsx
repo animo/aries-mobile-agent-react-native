@@ -13,8 +13,8 @@ import { Alert } from 'react-native'
 
 const CredentialsView: React.FC = (): React.ReactElement => {
   const [credentials, setCredentials] = useState<CredentialRecord[]>([])
-  const [modalVisible, setModalVisible] = useState(false)
-  const [modalCredential, setModalCredential] = useState<CredentialRecord | undefined>(undefined)
+  const [, setModalVisible] = useState(false)
+  const [, setModalCredential] = useState<CredentialRecord | undefined>(undefined)
 
   const { agent } = useAgent()
 
@@ -32,7 +32,13 @@ const CredentialsView: React.FC = (): React.ReactElement => {
     const offerMessage = JsonTransformer.fromJSON(record.offerMessage, OfferCredentialMessage)
 
     for (const attribute of offerMessage.credentialPreview.attributes) {
-      attributeStrings = attributeStrings.concat(`\t- ${attribute.name}:\t\t${attribute.value}\n`)
+      if (attribute.value.startsWith('data:')) {
+        attributeStrings = attributeStrings.concat(
+          `\t- ${attribute.name}:\t\t[BLOB IMAGE]: ${attribute.value.length}\n`
+        )
+      } else {
+        attributeStrings = attributeStrings.concat(`\t- ${attribute.name}:\t\t${attribute.value}\n`)
+      }
     }
 
     Alert.alert(
@@ -73,14 +79,13 @@ const CredentialsView: React.FC = (): React.ReactElement => {
     setCredentials(newState)
   }
 
-  const showCredentialModal = (record: CredentialRecord): void => {
-    setModalCredential(record)
-    setModalVisible(true)
-  }
-
   const onCredentialAccept = async (record: CredentialRecord): Promise<void> => {
-    await agent.credentials.acceptCredential(record.id)
-
+    if (record.state === 'offer-received') {
+      await agent.credentials.acceptOffer(record.id)
+    }
+    if (record.state === 'credential-received') {
+      await agent.credentials.acceptCredential(record.id)
+    }
     setModalVisible(false)
     setModalCredential(undefined)
   }
@@ -103,14 +108,6 @@ const CredentialsView: React.FC = (): React.ReactElement => {
   return (
     <BaseView viewTitle="credentials">
       <CredentialList credentialRecords={credentials} showCredentialModal={showNewCredentialOfferAlert} />
-      {/* {modalVisible && (
-        <CredentialModal
-          visible={modalVisible}
-          onDecline={onCredentialDecline}
-          onAccept={async (): Promise<void> => await onCredentialAccept(modalCredential)}
-          credential={modalCredential}
-        />
-      )} */}
     </BaseView>
   )
 }

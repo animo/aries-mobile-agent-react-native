@@ -35,10 +35,6 @@ type RenderProps = {
 }
 
 const CredentialList = (props: CredentialListProps) => {
-  // const renderItem = ({ item, index }): ReactElement => (
-  //   <ListItem style={styles.item} title={item.id} description={item.did} />
-  // )
-
   const renderItem = (unit: RenderProps): ReactElement => (
     <TouchableOpacity
       style={{ marginVertical: 5, marginHorizontal: 10 }}
@@ -47,24 +43,13 @@ const CredentialList = (props: CredentialListProps) => {
       <View style={{ width: '100%' }}>
         <View style={{ flexDirection: 'column' }}>
           <ListRow title="id" value={unit.item.id} />
-          {/* <ListRow title="connectionId" value={item.connectionId} /> */}
-
           <Text style={{ alignSelf: 'flex-end' }}>{unit.item.state}</Text>
-          {/* <Text category="label">{item.did}</Text> */}
         </View>
       </View>
     </TouchableOpacity>
   )
 
-  return (
-    <List
-      // style={}
-      // contentContainerStyle={{ ...styles.contentContainer }}
-      data={props.credentialRecords}
-      ItemSeparatorComponent={Divider}
-      renderItem={renderItem}
-    />
-  )
+  return <List data={props.credentialRecords} ItemSeparatorComponent={Divider} renderItem={renderItem} />
 }
 
 export { CredentialList }

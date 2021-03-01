@@ -30,7 +30,7 @@ class PollingInboundTransporter implements InboundTransporter {
       for (const message of downloadedMessages) {
         await agent.receiveMessage(message)
       }
-    }, 5000)
+    }, 10000)
   }
 }
 
