@@ -1,9 +1,8 @@
 import * as eva from '@eva-design/eva'
-import { ApplicationProvider, IconRegistry, StyleService, useStyleSheet } from '@ui-kitten/components'
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
 import { EvaIconsPack } from '@ui-kitten/eva-icons'
 import React from 'react'
 import 'react-native-get-random-values'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { AgentProvider } from './agent/AgentProvider'
 import { RootView } from './views/RootView'
 
@@ -12,7 +11,12 @@ const App = (): Element => {
     <>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={eva.dark}>
-        <AgentProvider agentConfig={{ mediatorUrl: 'https://573c94f0d09a.ngrok.io' }}>
+        <AgentProvider
+          agentConfig={{
+            mediatorUrl: 'https://5452dbc80cb7.ngrok.io',
+            genesisUrl: 'http://dev.greenlight.bcovrin.vonx.io/genesis',
+          }}
+        >
           <RootView />
         </AgentProvider>
       </ApplicationProvider>

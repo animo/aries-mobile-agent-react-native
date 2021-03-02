@@ -8,7 +8,8 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint'],
   rules: {
-    '@typescript-eslint/explicit-function-return-type': 'error',
+    // '@typescript-eslint/explicit-function-return-type': 'error',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
     'no-console': 'error',
     semi: ['error', 'never'],
     // '@typescript-eslint/semi': ['error', 'never'],

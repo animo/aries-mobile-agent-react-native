@@ -9,7 +9,6 @@ const RootView: React.FC = (): React.ReactElement => {
   const styles = useStyleSheet(themedStyles)
 
   const { loading } = useAgent()
-  console.log(loading)
 
   return <SafeAreaView style={styles.safeAreaView}>{loading ? <LoaderView /> : <AppNavigator />}</SafeAreaView>
 }

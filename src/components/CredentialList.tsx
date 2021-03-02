@@ -2,11 +2,10 @@ import { Divider, List, Text } from '@ui-kitten/components'
 import { CredentialRecord } from 'aries-framework-javascript'
 import React, { ReactElement } from 'react'
 import { TouchableOpacity, View } from 'react-native'
-import { useAgent } from '../agent/AgentProvider'
 
 type CredentialListProps = {
   credentialRecords: CredentialRecord[]
-  showCredentilModal: (record: CredentialRecord) => void
+  showCredentialModal: (record: CredentialRecord) => void
 }
 
 type ListRowProps = {
@@ -40,13 +39,10 @@ const CredentialList = (props: CredentialListProps) => {
   //   <ListItem style={styles.item} title={item.id} description={item.did} />
   // )
 
-  const { agent } = useAgent()
-
   const renderItem = (unit: RenderProps): ReactElement => (
     <TouchableOpacity
       style={{ marginVertical: 5, marginHorizontal: 10 }}
-      onPress={() => props.showCredentilModal(unit.item)}
-      // onPress={() => console.log(unit.item)}
+      onPress={() => props.showCredentialModal(unit.item)}
     >
       <View style={{ width: '100%' }}>
         <View style={{ flexDirection: 'column' }}>

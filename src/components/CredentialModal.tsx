@@ -1,6 +1,5 @@
 import { Button, Card, Modal, Text } from '@ui-kitten/components'
 import { CredentialRecord } from 'aries-framework-javascript'
-import { ConnectionInvitationMessage } from 'aries-framework-javascript/build/lib/protocols/connections/ConnectionInvitationMessage'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { KeyValueTextRow } from './KeyValueTextRow'

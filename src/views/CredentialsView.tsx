@@ -1,16 +1,12 @@
 import {
   ConnectionEventType,
-  ConnectionRecord,
-  CredentialEventType,
-  CredentialOfferMessage,
   CredentialRecord,
+  CredentialStateChangedEvent,
+  JsonTransformer,
+  OfferCredentialMessage,
 } from 'aries-framework-javascript'
-import { JsonTransformer } from 'aries-framework-javascript/build/lib/utils/JsonTransformer'
-import { CredentialState } from 'aries-framework-javascript/build/lib/protocols/credentials/CredentialState'
 import React, { useEffect, useState } from 'react'
 import { useAgent } from '../agent/AgentProvider'
-import { CredentialModal } from '../components'
-import { ConnectionList } from '../components/ConnectionList'
 import { CredentialList } from '../components/CredentialList'
 import { BaseView } from './BaseView'
 import { Alert } from 'react-native'
@@ -23,19 +19,19 @@ const CredentialsView: React.FC = (): React.ReactElement => {
   const { agent } = useAgent()
 
   async function fetchCredentials(): Promise<void> {
-    const creds = await agent.credentials.getCredentials()
-    setCredentials(creds)
+    const credentials = await agent.credentials.getAll()
+    setCredentials(credentials)
   }
 
   const showNewCredentialOfferAlert = (record: CredentialRecord): void => {
-    console.log(record.offer['credential_preview'].attributes)
-
     let bodyString = `From: ${record.connectionId}\n\n`
     // bodyString = bodyString.concat(`${record.offer.credentialPreview.}`)
     bodyString = bodyString.concat(`State: ${record.state}\n\n`)
     let attributeStrings = 'Attributes:\n'
 
-    for (const attribute of record.offer['credential_preview'].attributes) {
+    const offerMessage = JsonTransformer.fromJSON(record.offerMessage, OfferCredentialMessage)
+
+    for (const attribute of offerMessage.credentialPreview.attributes) {
       attributeStrings = attributeStrings.concat(`\t- ${attribute.name}:\t\t${attribute.value}\n`)
     }
 
@@ -56,16 +52,14 @@ const CredentialsView: React.FC = (): React.ReactElement => {
     )
   }
 
-  const handleCredentialStateChanged = async (event: {
-    credential: CredentialRecord
-    prevState: CredentialState
-  }): Promise<void> => {
+  const handleCredentialStateChanged = async (event: CredentialStateChangedEvent): Promise<void> => {
+    // eslint-disable-next-line no-console
     console.log(
-      `credential event for: ${event.credential.id}, prev state -> ${event.prevState} new state: ${
-        event.credential.state
+      `credential event for: ${event.credentialRecord.id}, prev state -> ${event.previousState} new state: ${
+        event.credentialRecord.state
       }`
     )
-    const newCredential = await agent.credentials.find(event.credential.id)
+    const newCredential = await agent.credentials.getById(event.credentialRecord.id)
     const index = credentials.findIndex((x: CredentialRecord) => x.id === newCredential.id)
 
     if (index === -1) {
@@ -85,7 +79,7 @@ const CredentialsView: React.FC = (): React.ReactElement => {
   }
 
   const onCredentialAccept = async (record: CredentialRecord): Promise<void> => {
-    await agent.credentials.acceptCredential(record)
+    await agent.credentials.acceptCredential(record.id)
 
     setModalVisible(false)
     setModalCredential(undefined)
@@ -97,18 +91,18 @@ const CredentialsView: React.FC = (): React.ReactElement => {
   }
 
   useEffect(() => {
-    agent.credentials.credentialService.removeAllListeners(ConnectionEventType.StateChanged)
-    agent.credentials.credentialService.on(ConnectionEventType.StateChanged, handleCredentialStateChanged)
+    agent.credentials.events.removeAllListeners(ConnectionEventType.StateChanged)
+    agent.credentials.events.on(ConnectionEventType.StateChanged, handleCredentialStateChanged)
   }, [credentials])
 
   useEffect(() => {
     fetchCredentials()
-    agent.credentials.credentialService.on(ConnectionEventType.StateChanged, handleCredentialStateChanged)
+    agent.credentials.events.on(ConnectionEventType.StateChanged, handleCredentialStateChanged)
   }, [])
 
   return (
     <BaseView viewTitle="credentials">
-      <CredentialList credentialRecords={credentials} showCredentilModal={showNewCredentialOfferAlert} />
+      <CredentialList credentialRecords={credentials} showCredentialModal={showNewCredentialOfferAlert} />
       {/* {modalVisible && (
         <CredentialModal
           visible={modalVisible}

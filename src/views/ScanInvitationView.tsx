@@ -1,8 +1,7 @@
-import { decodeInvitationFromUrl } from 'aries-framework-javascript'
-import { ConnectionInvitationMessage } from 'aries-framework-javascript/build/lib/protocols/connections/ConnectionInvitationMessage'
+import { decodeInvitationFromUrl, ConnectionInvitationMessage } from 'aries-framework-javascript'
 import React, { useEffect, useRef, useState } from 'react'
 import { Alert, StyleSheet, View } from 'react-native'
-import { BarCodeReadEvent, BarCodeType, RNCamera } from 'react-native-camera'
+import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
 import Permissions from 'react-native-permissions'
 
 import { useAgent } from '../agent/AgentProvider'
@@ -15,7 +14,7 @@ const ScannerView = ({ navigation }): React.ReactElement => {
   const [invitationObject, setInvitationObject] = useState<ConnectionInvitationMessage | undefined>(undefined)
   let qrScanned = false
 
-  let cameraRef = useRef(null)
+  const cameraRef = useRef(null)
   const { agent } = useAgent()
 
   useEffect(() => {
@@ -41,11 +40,8 @@ const ScannerView = ({ navigation }): React.ReactElement => {
   }
 
   async function onScan(scanResult: BarCodeReadEvent): Promise<void> {
-    console.log(scanResult)
-
     if (qrScanned === true) return
 
-    console.log('hihi')
     qrScanned = true
 
     if (scanResult.data === null) {
@@ -70,7 +66,7 @@ const ScannerView = ({ navigation }): React.ReactElement => {
   // }
 
   async function onAccept(invite: ConnectionInvitationMessage): Promise<void> {
-    await agent.connections.receiveInvitation(invite.toJSON(), { autoAcceptConnection: true })
+    await agent.connections.receiveInvitation(invite, { autoAcceptConnection: true })
     navigation.navigate('Connections')
     qrScanned = false
   }
@@ -85,9 +81,7 @@ const ScannerView = ({ navigation }): React.ReactElement => {
     <BaseView viewTitle="Scan Invitation">
       <View style={styles.container}>
         <RNCamera
-          ref={ref => {
-            cameraRef = ref
-          }}
+          ref={cameraRef}
           onBarCodeRead={(scanResult: BarCodeReadEvent): Promise<void> => onScan(scanResult)}
           captureAudio={false}
           androidCameraPermissionOptions={{
