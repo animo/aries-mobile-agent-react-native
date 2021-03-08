@@ -79,8 +79,12 @@ const CredentialsView: React.FC = (): React.ReactElement => {
   }
 
   const onCredentialAccept = async (record: CredentialRecord): Promise<void> => {
-    await agent.credentials.acceptCredential(record.id)
-
+    if (record.state === 'offer-received') {
+      await agent.credentials.acceptOffer(record.id)
+    }
+    if (record.state === 'credential-received') {
+      await agent.credentials.acceptCredential(record.id)
+    }
     setModalVisible(false)
     setModalCredential(undefined)
   }

@@ -9,7 +9,6 @@ import { InvitationModal } from '../components'
 import { BaseView } from './BaseView'
 
 const ScannerView = ({ navigation }): React.ReactElement => {
-  const [invitationUrl, setInvitationUrl] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
   const [invitationObject, setInvitationObject] = useState<ConnectionInvitationMessage | undefined>(undefined)
   let qrScanned = false
@@ -21,7 +20,7 @@ const ScannerView = ({ navigation }): React.ReactElement => {
     Permissions.check('ios.permission.CAMERA')
   }, [])
 
-  async function showInvitationAlert(invite: ConnectionInvitationMessage, newInvite = false): Promise<void> {
+  async function showInvitationAlert(invite: ConnectionInvitationMessage): Promise<void> {
     Alert.alert(
       'Connection Invitation',
       `ID:\t\t${invite.id}\n\nEndpoint:\t\t${invite.serviceEndpoint}`,
@@ -53,17 +52,6 @@ const ScannerView = ({ navigation }): React.ReactElement => {
 
     await showInvitationAlert(invitation)
   }
-
-  // try {
-  //   Keyboard.dismiss()
-  //   const invitation = await decodeInvitationFromUrl(invitationUrl)
-  //   setInvitationObject(invitation)
-  //   setModalVisible(true)
-  // } catch (e) {
-  //   console.error('Something went wrong while decoding invitation url')
-  //   throw e
-  // }
-  // }
 
   async function onAccept(invite: ConnectionInvitationMessage): Promise<void> {
     await agent.connections.receiveInvitation(invite, { autoAcceptConnection: true })
@@ -110,7 +98,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 30,
-    // alignItems: 'center',
   },
   row: {
     flexDirection: 'row',

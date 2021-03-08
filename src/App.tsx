@@ -13,7 +13,7 @@ const App = (): Element => {
       <ApplicationProvider {...eva} theme={eva.dark}>
         <AgentProvider
           agentConfig={{
-            mediatorUrl: 'https://5452dbc80cb7.ngrok.io',
+            mediatorUrl: 'https://bf62892feaba.ngrok.io',
             genesisUrl: 'http://dev.greenlight.bcovrin.vonx.io/genesis',
           }}
         >
