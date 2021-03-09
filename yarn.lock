@@ -6110,10 +6110,9 @@ rimraf@~2.2.6:
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.2.8.tgz#e439be2aaee327321952730f99a8929e4fc50582"
   integrity sha1-5Dm+Kq7jJzIZUnMPmaiSnk/FBYI=
 
-rn-indy-sdk@0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/rn-indy-sdk/-/rn-indy-sdk-0.1.8.tgz#a0c44ff923597b6e86f9d8ffd8caab5f59f6ce7c"
-  integrity sha512-C/sifqDFUsC5V2plBoQwXhioBLSqQLCGLbRHKrOgOu9vjGBpW9e+o9U5GkG1SFjMQX5kh4IhYwJDTlTJfO9Z9g==
+"rn-indy-sdk@file:rn-indy-sdk-v0.1.13.tgz":
+  version "0.1.13"
+  resolved "file:rn-indy-sdk-v0.1.13.tgz#1e8e17a95eaa42fa37911c1ccb474deb9f5d81d3"
   dependencies:
     buffer "^6.0.2"
 

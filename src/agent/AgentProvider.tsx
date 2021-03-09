@@ -36,11 +36,11 @@ const AgentProvider = (props: AgentContextProps) => {
     const outbound = new HttpOutboundTransporter()
 
     const agentConfig: InitConfig = {
-      label: 'javascript8',
-      walletConfig: { id: 'wallet8' },
-      walletCredentials: { key: '1238' },
+      label: 'javascript',
+      walletConfig: { id: 'wallet' },
+      walletCredentials: { key: '123' },
       autoAcceptConnections: true,
-      poolName: 'test-1034',
+      poolName: 'test-101',
       ...props.agentConfig,
       genesisPath,
     }

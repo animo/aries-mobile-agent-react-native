@@ -2,12 +2,12 @@ import {
   ConnectionEventType,
   JsonTransformer,
   ProofStateChangedEvent,
+  RequestedCredentials,
   RequestPresentationMessage,
 } from 'aries-framework-javascript'
 import { ProofRecord } from 'aries-framework-javascript/build/lib/storage/ProofRecord'
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-native'
-import base64 from 'react-native-base64'
 import { useAgent } from '../agent/AgentProvider'
 import { ProofList } from '../components/ProofList'
 import { BaseView } from './BaseView'
@@ -24,36 +24,44 @@ const ProofsView: React.FC = (): React.ReactElement => {
     setProofs(proofs)
   }
 
-  // TODO: first request adds two credentials to the list
-  const showNewProofRequestAlert = (record: ProofRecord): void => {
-    const requestMessage = JsonTransformer.fromJSON(record.requestMessage, RequestPresentationMessage)
-
+  const showNewProofRequestAlert = async (record: ProofRecord): Promise<void> => {
+    const requestMessage =
+      record.requestMessage instanceof RequestPresentationMessage
+        ? record.requestMessage
+        : JsonTransformer.fromJSON(record.requestMessage, RequestPresentationMessage)
+    const retreivedCredentials = []
+    const proofRequest = requestMessage.indyProofRequest
+    const requestedCredentials = await agent.proof.getRequestedCredentialsForProofRequest(proofRequest, undefined)
     const connectionString = `From: ${record.connectionId}\n\n`
     const stateString = `State: ${record.state}\n\n`
-    const attributeString = 'Attributes:\n'
-
-    // X DOES NOET REACH :-(
-    // const x = `requestMessage, attach: ${JSON.stringify(requestMessage['request_presentations~attach'])}`
-
-    const base64Cred = record['requestMessage']['request_presentations~attach'][0].data.base64
-    const proofRequest = JSON.parse(base64.decode(base64Cred))
-    const requestedAttributes = proofRequest.requested_attributes
-    const attributes = Object.keys(requestedAttributes).map(key => `\t- ${requestedAttributes[key].name}`)
-    const attributesString = attributes.join('\n')
+    const credentials = []
+    await Promise.all(
+      Object.keys(requestedCredentials.requestedAttributes).map(async key => {
+        const credId = requestedCredentials.requestedAttributes[key].credentialId
+        if (!retreivedCredentials.some(id => id === credId)) {
+          retreivedCredentials.push(credId)
+          const credential = await agent.credentials.getIndyCredential(credId)
+          credentials.push(credential.attributes)
+        }
+      })
+    )
+    let attributesString = 'Attributes:\n'
+    credentials.forEach(credential => {
+      Object.keys(credential).map(key => {
+        attributesString += `\t- ${key} : ${credential[key]}\n`
+      })
+    })
 
     Alert.alert(
       'New Proof Request',
-      connectionString
-        .concat(stateString)
-        .concat(attributeString)
-        .concat(attributesString),
+      connectionString.concat(stateString).concat(attributesString),
       [
         {
           text: 'Decline',
           style: 'cancel',
           onPress: (): void => onProofDecline(),
         },
-        { text: 'Accept', onPress: async (): Promise<void> => await onProofAccept(record) },
+        { text: 'Accept', onPress: async (): Promise<void> => await onProofAccept(record, requestedCredentials) },
       ],
       {
         cancelable: true,
@@ -83,15 +91,10 @@ const ProofsView: React.FC = (): React.ReactElement => {
     setProofs(newState)
   }
 
-  const onProofAccept = async (record: ProofRecord): Promise<void> => {
-    // TODO: get the second argument of function below
-    const requestMessage =
-      record.requestMessage instanceof RequestPresentationMessage
-        ? record.requestMessage
-        : JsonTransformer.fromJSON(record.requestMessage, RequestPresentationMessage)
-    const proofRequest = requestMessage.indyProofRequest
-    const requestedCredentials = await agent.proof.getRequestedCredentialsForProofRequest(proofRequest, undefined)
-    await agent.proof.acceptRequest(record.id, requestedCredentials)
+  const onProofAccept = async (record: ProofRecord, requestedCredentials: RequestedCredentials): Promise<void> => {
+    if (record.state === 'request-received') {
+      await agent.proof.acceptRequest(record.id, requestedCredentials)
+    }
 
     setModalVisible(false)
     setModalProof(undefined)
