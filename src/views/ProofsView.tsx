@@ -19,42 +19,50 @@ const ProofsView: React.FC = (): React.ReactElement => {
 
   const showNewProofRequestAlert = async (record: ProofRecord): Promise<void> => {
     const retrievedCredentials = []
-    const requestedCredentials = await agent.proofs.getRequestedCredentialsForProofRequest(
-      record.requestMessage.indyProofRequest,
-      undefined
-    )
-    const selectedCredentials = agent.proofs.autoSelectCredentialsForProofRequest(requestedCredentials)
-    const connectionString = `From: ${record.connectionId}\n\n`
-    const stateString = `State: ${record.state}\n\n`
-    const credentials = []
-    await Promise.all(
-      Object.keys(selectedCredentials.requestedAttributes).map(async key => {
-        const credId = selectedCredentials.requestedAttributes[key].credentialId
-        if (!retrievedCredentials.some(id => id === credId)) {
-          retrievedCredentials.push(credId)
 
-          const credential = requestedCredentials.requestedAttributes[key].find(cred => cred.credentialId === credId)
-          credentials.push(credential.credentialInfo.attributes)
-        }
-      })
-    )
-    let attributesString = 'Attributes:\n'
-    credentials.forEach(credential => {
-      Object.keys(credential).map(key => {
-        attributesString += `\t- ${key} : ${credential[key]}\n`
-      })
-    })
+    console.log(JSON.stringify(record.requestMessage.indyProofRequest.toJSON(), null, 2))
+    // const requestedCredentials = await agent.proofs.getRequestedCredentialsForProofRequest(
+    //   record.requestMessage.indyProofRequest
+    // )
+
+    // const selectedCredentials = agent.proofs.autoSelectCredentialsForProofRequest(requestedCredentials)
+    // const connectionString = `From: ${record.connectionId}\n\n`
+
+    // const stateString = `State: ${record.state}\n\n`
+    // const credentials = []
+    // await Promise.all(
+    //   Object.keys(selectedCredentials.requestedAttributes).map(async key => {
+    //     const credId = selectedCredentials.requestedAttributes[key].credentialId
+    //     if (!retrievedCredentials.some(id => id === credId)) {
+    //       retrievedCredentials.push(credId)
+
+    //       const credential = requestedCredentials.requestedAttributes[key].find(cred => cred.credentialId === credId)
+    //       credentials.push(credential.credentialInfo.attributes)
+    //     }
+    //   })
+    // )
+    const attributesString = 'Attributes:\n'
+    // credentials.forEach(credential => {
+    //   Object.keys(credential).map(key => {
+    //     attributesString += `\t- ${key} : ${credential[key]}\n`
+    //   })
+    // })
 
     Alert.alert(
       'New Proof Request',
-      connectionString.concat(stateString).concat(attributesString),
+      'test', // connectionString.concat(stateString).concat(attributesString),
       [
         {
           text: 'Decline',
           style: 'cancel',
           onPress: (): void => onProofDecline(),
         },
-        { text: 'Accept', onPress: async (): Promise<void> => await onProofAccept(record, selectedCredentials) },
+        {
+          text: 'Accept',
+          onPress: async (): Promise<void> => {
+            console.log('acceptie') /* await onProofAccept(record, selectedCredentials) */
+          },
+        },
       ],
       {
         cancelable: true,
@@ -70,18 +78,19 @@ const ProofsView: React.FC = (): React.ReactElement => {
       } new state: ${event.payload.proofRecord.state}`
     )
     const newProof = await agent.proofs.getById(event.payload.proofRecord.id)
-    const index = proofs.findIndex((x: ProofRecord) => x.id === newProof.id)
+    setProofs(proofs => {
+      const index = proofs.findIndex((x: ProofRecord) => x.id === newProof.id)
 
-    if (index === -1) {
-      showNewProofRequestAlert(newProof)
+      if (index === -1) {
+        showNewProofRequestAlert(newProof)
 
-      setProofs(proofs => [...proofs, newProof])
-      return
-    }
+        return [...proofs, newProof]
+      }
 
-    const newState = [...proofs]
-    newState[index] = newProof
-    setProofs(newState)
+      const newState = [...proofs]
+      newState[index] = newProof
+      return newState
+    })
   }
 
   const onProofAccept = async (record: ProofRecord, requestedCredentials: RequestedCredentials): Promise<void> => {

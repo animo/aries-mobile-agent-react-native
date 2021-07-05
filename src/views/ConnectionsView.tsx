@@ -33,27 +33,28 @@ const ConnectionsView: React.FC = (): React.ReactElement => {
     )
   }
 
-  const handleConnectionStateChange = (event: ConnectionStateChangedEvent) => {
-    // eslint-disable-next-line no-console
-    console.log(
-      `connection event for: ${event.payload.connectionRecord.id}, previous state -> ${
-        event.payload.previousState
-      } new state: ${event.payload.connectionRecord.state}`
-    )
+  useEffect(() => {
+    const handleConnectionStateChange = (event: ConnectionStateChangedEvent) => {
+      // eslint-disable-next-line no-console
+      console.log(
+        `connection event for: ${event.payload.connectionRecord.id}, previous state -> ${
+          event.payload.previousState
+        } new state: ${event.payload.connectionRecord.state}`
+      )
 
-    const index = connections.findIndex((x: ConnectionRecord) => x.id === event.payload.connectionRecord.id)
+      setConnections(connections => {
+        const index = connections.findIndex(x => x.id === event.payload.connectionRecord.id)
 
-    if (index === -1) {
-      setConnections(connections => [...connections, event.payload.connectionRecord])
-      return
+        if (index === -1) {
+          return [...connections, event.payload.connectionRecord]
+        }
+
+        const newState = [...connections]
+        newState[index] = event.payload.connectionRecord
+        return newState
+      })
     }
 
-    const newState = [...connections]
-    newState[index] = event.payload.connectionRecord
-    setConnections(newState)
-  }
-
-  useEffect(() => {
     fetchConnections()
     agent.events.on(ConnectionEventTypes.ConnectionStateChanged, handleConnectionStateChange)
 

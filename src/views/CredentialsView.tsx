@@ -51,18 +51,20 @@ const CredentialsView: React.FC = (): React.ReactElement => {
         event.payload.previousState
       } new state: ${event.payload.credentialRecord.state}`
     )
+
     const newCredential = await agent.credentials.getById(event.payload.credentialRecord.id)
-    const index = credentials.findIndex((x: CredentialRecord) => x.id === newCredential.id)
+    setCredentials(credentials => {
+      const index = credentials.findIndex((x: CredentialRecord) => x.id === newCredential.id)
 
-    if (index === -1) {
-      showNewCredentialOfferAlert(newCredential)
-      setCredentials(credentials => [...credentials, newCredential])
-      return
-    }
+      if (index === -1) {
+        showNewCredentialOfferAlert(newCredential)
+        return [...credentials, newCredential]
+      }
 
-    const newState = [...credentials]
-    newState[index] = newCredential
-    setCredentials(newState)
+      const newState = [...credentials]
+      newState[index] = newCredential
+      return newState
+    })
   }
 
   const showCredentialModal = (record: CredentialRecord): void => {
