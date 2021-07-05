@@ -1,11 +1,4 @@
-import {
-  ConnectionEventType,
-  JsonTransformer,
-  ProofStateChangedEvent,
-  RequestedCredentials,
-  RequestPresentationMessage,
-} from 'aries-framework-javascript'
-import { ProofRecord } from 'aries-framework-javascript/build/lib/storage/ProofRecord'
+import { ProofStateChangedEvent, RequestedCredentials, ProofRecord, ProofEventTypes } from 'aries-framework'
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-native'
 import { useAgent } from '../agent/AgentProvider'
@@ -20,28 +13,28 @@ const ProofsView: React.FC = (): React.ReactElement => {
   const { agent } = useAgent()
 
   const fetchProofs = async (): Promise<void> => {
-    const proofs = await agent.proof.getAll()
+    const proofs = await agent.proofs.getAll()
     setProofs(proofs)
   }
 
   const showNewProofRequestAlert = async (record: ProofRecord): Promise<void> => {
-    const requestMessage =
-      record.requestMessage instanceof RequestPresentationMessage
-        ? record.requestMessage
-        : JsonTransformer.fromJSON(record.requestMessage, RequestPresentationMessage)
-    const retreivedCredentials = []
-    const proofRequest = requestMessage.indyProofRequest
-    const requestedCredentials = await agent.proof.getRequestedCredentialsForProofRequest(proofRequest, undefined)
+    const retrievedCredentials = []
+    const requestedCredentials = await agent.proofs.getRequestedCredentialsForProofRequest(
+      record.requestMessage.indyProofRequest,
+      undefined
+    )
+    const selectedCredentials = agent.proofs.autoSelectCredentialsForProofRequest(requestedCredentials)
     const connectionString = `From: ${record.connectionId}\n\n`
     const stateString = `State: ${record.state}\n\n`
     const credentials = []
     await Promise.all(
-      Object.keys(requestedCredentials.requestedAttributes).map(async key => {
-        const credId = requestedCredentials.requestedAttributes[key].credentialId
-        if (!retreivedCredentials.some(id => id === credId)) {
-          retreivedCredentials.push(credId)
-          const credential = await agent.credentials.getIndyCredential(credId)
-          credentials.push(credential.attributes)
+      Object.keys(selectedCredentials.requestedAttributes).map(async key => {
+        const credId = selectedCredentials.requestedAttributes[key].credentialId
+        if (!retrievedCredentials.some(id => id === credId)) {
+          retrievedCredentials.push(credId)
+
+          const credential = requestedCredentials.requestedAttributes[key].find(cred => cred.credentialId === credId)
+          credentials.push(credential.credentialInfo.attributes)
         }
       })
     )
@@ -61,7 +54,7 @@ const ProofsView: React.FC = (): React.ReactElement => {
           style: 'cancel',
           onPress: (): void => onProofDecline(),
         },
-        { text: 'Accept', onPress: async (): Promise<void> => await onProofAccept(record, requestedCredentials) },
+        { text: 'Accept', onPress: async (): Promise<void> => await onProofAccept(record, selectedCredentials) },
       ],
       {
         cancelable: true,
@@ -72,11 +65,11 @@ const ProofsView: React.FC = (): React.ReactElement => {
   const handlerProofStateChanged = async (event: ProofStateChangedEvent): Promise<void> => {
     // eslint-disable-next-line no-console
     console.log(
-      `Present proof event for: ${event.proofRecord.id}, prev state -> ${event.previousState} new state: ${
-        event.proofRecord.state
-      }`
+      `Present proof event for: ${event.payload.proofRecord.id}, prev state -> ${
+        event.payload.previousState
+      } new state: ${event.payload.proofRecord.state}`
     )
-    const newProof = await agent.proof.getById(event.proofRecord.id)
+    const newProof = await agent.proofs.getById(event.payload.proofRecord.id)
     const index = proofs.findIndex((x: ProofRecord) => x.id === newProof.id)
 
     if (index === -1) {
@@ -93,7 +86,7 @@ const ProofsView: React.FC = (): React.ReactElement => {
 
   const onProofAccept = async (record: ProofRecord, requestedCredentials: RequestedCredentials): Promise<void> => {
     if (record.state === 'request-received') {
-      await agent.proof.acceptRequest(record.id, requestedCredentials)
+      await agent.proofs.acceptRequest(record.id, requestedCredentials)
     }
 
     setModalVisible(false)
@@ -106,13 +99,12 @@ const ProofsView: React.FC = (): React.ReactElement => {
   }
 
   useEffect(() => {
-    agent.proof.events.removeAllListeners(ConnectionEventType.StateChanged)
-    agent.proof.events.on(ConnectionEventType.StateChanged, handlerProofStateChanged)
-  }, [proofs])
-
-  useEffect(() => {
     fetchProofs()
-    agent.proof.events.on(ConnectionEventType.StateChanged, handlerProofStateChanged)
+    agent.events.on(ProofEventTypes.ProofStateChanged, handlerProofStateChanged)
+
+    return () => {
+      agent.events.off(ProofEventTypes.ProofStateChanged, handlerProofStateChanged)
+    }
   }, [])
 
   return (

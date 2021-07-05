@@ -1,5 +1,5 @@
 import { Button, Card, Modal, Text } from '@ui-kitten/components'
-import { ProofRecord } from 'aries-framework-javascript/build/lib/storage/ProofRecord'
+import { ProofRecord } from 'aries-framework'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { KeyValueTextRow } from './KeyValueTextRow'

@@ -1,5 +1,5 @@
 import { Divider, List, Text } from '@ui-kitten/components'
-import { ProofRecord } from 'aries-framework-javascript/build/lib/storage/ProofRecord'
+import { ProofRecord } from 'aries-framework'
 import React, { ReactElement } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 

@@ -1,10 +1,4 @@
-import {
-  CredentialEventTypes,
-  CredentialRecord,
-  CredentialStateChangedEvent,
-  JsonTransformer,
-  OfferCredentialMessage,
-} from 'aries-framework'
+import { CredentialEventTypes, CredentialRecord, CredentialStateChangedEvent } from 'aries-framework'
 import React, { useEffect, useState } from 'react'
 import { useAgent } from '../agent/AgentProvider'
 import { CredentialList } from '../components/CredentialList'
@@ -29,9 +23,7 @@ const CredentialsView: React.FC = (): React.ReactElement => {
     bodyString = bodyString.concat(`State: ${record.state}\n\n`)
     let attributeStrings = 'Attributes:\n'
 
-    const offerMessage = JsonTransformer.fromJSON(record.offerMessage, OfferCredentialMessage)
-
-    for (const attribute of offerMessage.credentialPreview.attributes) {
+    for (const attribute of record.offerMessage.credentialPreview.attributes) {
       attributeStrings = attributeStrings.concat(`\t- ${attribute.name}:\t\t${attribute.value}\n`)
     }
 
