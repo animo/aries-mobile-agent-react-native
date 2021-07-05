@@ -1,4 +1,4 @@
-import { decodeInvitationFromUrl, ConnectionInvitationMessage } from 'aries-framework-javascript'
+import { ConnectionInvitationMessage } from 'aries-framework'
 import React, { useEffect, useRef, useState } from 'react'
 import { Alert, StyleSheet, View } from 'react-native'
 import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
@@ -49,7 +49,7 @@ const ScannerView = ({ navigation }): React.ReactElement => {
       return
     }
 
-    const invitation = await decodeInvitationFromUrl(scanResult.data)
+    const invitation = await ConnectionInvitationMessage.fromUrl(scanResult.data)
 
     await showInvitationAlert(invitation)
   }

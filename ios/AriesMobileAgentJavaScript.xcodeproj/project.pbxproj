@@ -242,11 +242,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 64Y6GSL5KV;
+						DevelopmentTeam = UG66RMK356;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 64Y6GSL5KV;
+						DevelopmentTeam = UG66RMK356;
 						LastSwiftMigration = 1230;
 					};
 				};
@@ -418,7 +418,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 64Y6GSL5KV;
+				DEVELOPMENT_TEAM = UG66RMK356;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -444,7 +444,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = 64Y6GSL5KV;
+				DEVELOPMENT_TEAM = UG66RMK356;
 				INFOPLIST_FILE = AriesMobileAgentJavaScriptTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -467,7 +467,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 64Y6GSL5KV;
+				DEVELOPMENT_TEAM = UG66RMK356;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -481,7 +481,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.karimstekelenburg.moibile-agent";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.karimstekelenburg.moibile-agent2";
 				PRODUCT_NAME = AriesMobileAgentJavaScript;
 				SWIFT_OBJC_BRIDGING_HEADER = "AriesMobileAgentJavaScript-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -497,7 +497,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 64Y6GSL5KV;
+				DEVELOPMENT_TEAM = UG66RMK356;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -511,7 +511,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.karimstekelenburg.moibile-agent";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.karimstekelenburg.moibile-agent2";
 				PRODUCT_NAME = AriesMobileAgentJavaScript;
 				SWIFT_OBJC_BRIDGING_HEADER = "AriesMobileAgentJavaScript-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

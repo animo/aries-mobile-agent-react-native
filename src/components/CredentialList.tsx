@@ -1,5 +1,5 @@
 import { Divider, List, Text } from '@ui-kitten/components'
-import { CredentialRecord } from 'aries-framework-javascript'
+import { CredentialRecord } from 'aries-framework'
 import React, { ReactElement } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 

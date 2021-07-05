@@ -1,10 +1,10 @@
 import {
-  ConnectionEventType,
+  CredentialEventTypes,
   CredentialRecord,
   CredentialStateChangedEvent,
   JsonTransformer,
   OfferCredentialMessage,
-} from 'aries-framework-javascript'
+} from 'aries-framework'
 import React, { useEffect, useState } from 'react'
 import { useAgent } from '../agent/AgentProvider'
 import { CredentialList } from '../components/CredentialList'
@@ -55,11 +55,11 @@ const CredentialsView: React.FC = (): React.ReactElement => {
   const handleCredentialStateChanged = async (event: CredentialStateChangedEvent): Promise<void> => {
     // eslint-disable-next-line no-console
     console.log(
-      `credential event for: ${event.credentialRecord.id}, prev state -> ${event.previousState} new state: ${
-        event.credentialRecord.state
-      }`
+      `credential event for: ${event.payload.credentialRecord.id}, prev state -> ${
+        event.payload.previousState
+      } new state: ${event.payload.credentialRecord.state}`
     )
-    const newCredential = await agent.credentials.getById(event.credentialRecord.id)
+    const newCredential = await agent.credentials.getById(event.payload.credentialRecord.id)
     const index = credentials.findIndex((x: CredentialRecord) => x.id === newCredential.id)
 
     if (index === -1) {
@@ -91,13 +91,12 @@ const CredentialsView: React.FC = (): React.ReactElement => {
   }
 
   useEffect(() => {
-    agent.credentials.events.removeAllListeners(ConnectionEventType.StateChanged)
-    agent.credentials.events.on(ConnectionEventType.StateChanged, handleCredentialStateChanged)
-  }, [credentials])
-
-  useEffect(() => {
     fetchCredentials()
-    agent.credentials.events.on(ConnectionEventType.StateChanged, handleCredentialStateChanged)
+    agent.events.on(CredentialEventTypes.CredentialStateChanged, handleCredentialStateChanged)
+
+    return () => {
+      agent.events.off(CredentialEventTypes.CredentialStateChanged, handleCredentialStateChanged)
+    }
   }, [])
 
   return (
