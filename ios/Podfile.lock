@@ -188,16 +188,16 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
   - React-jsinspector (0.61.5)
-  - react-native-camera (3.40.0):
+  - react-native-camera (3.42.2):
     - React-Core
-    - react-native-camera/RCT (= 3.40.0)
-    - react-native-camera/RN (= 3.40.0)
-  - react-native-camera/RCT (3.40.0):
+    - react-native-camera/RCT (= 3.42.2)
+    - react-native-camera/RN (= 3.42.2)
+  - react-native-camera/RCT (3.42.2):
     - React-Core
-  - react-native-camera/RN (3.40.0):
+  - react-native-camera/RN (3.42.2):
     - React-Core
-  - react-native-get-random-values (1.5.0):
-    - React
+  - react-native-get-random-values (1.6.0):
+    - React-Core
   - react-native-safe-area-context (3.1.9):
     - React-Core
   - React-RCTActionSheet (0.61.5):
@@ -235,13 +235,13 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
     - ReactCommon/jscallinvoker (= 0.61.5)
-  - rn-indy-sdk (0.1.7):
+  - rn-indy-sdk (0.1.8):
     - React
   - RNFS (2.16.6):
     - React
   - RNPermissions (3.0.0):
     - React-Core
-  - RNScreens (2.16.1):
+  - RNScreens (2.17.1):
     - React-Core
   - RNSVG (12.1.0):
     - React
@@ -385,8 +385,8 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
-  react-native-camera: 35854c4f764a4a6cf61c1c3525888b92f0fe4b31
-  react-native-get-random-values: 1404bd5cc0ab0e287f75ee1c489555688fc65f89
+  react-native-camera: eb89d59d50a3fc124b067134b688bccbff0ee841
+  react-native-get-random-values: f0fc24a5887a3341589515a86282a574407b59e4
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
@@ -398,10 +398,10 @@ SPEC CHECKSUMS:
   React-RCTText: 9ccc88273e9a3aacff5094d2175a605efa854dbe
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
-  rn-indy-sdk: 66036f7e0e0dff2b6bf82de8fc8838e1dd656447
+  rn-indy-sdk: 07144a068412b3604b3131442f4fc1ed8827e15e
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNPermissions: 99dd8d4a30ff13509b949ca63cd1f69edc461775
-  RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
+  RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 

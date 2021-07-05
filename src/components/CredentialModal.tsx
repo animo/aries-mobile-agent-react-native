@@ -1,5 +1,5 @@
 import { Button, Card, Modal, Text } from '@ui-kitten/components'
-import { CredentialRecord } from 'aries-framework-javascript'
+import { CredentialRecord } from 'aries-framework'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { KeyValueTextRow } from './KeyValueTextRow'

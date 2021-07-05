@@ -1,4 +1,13 @@
 <p align="center">
+  <h3 align="center">⚠️ This repository is deprecated ⚠️</h1>
+  <p align="center"><font size="+1">Future work is happening at <a href="https://github.com/hyperledger/aries-mobile-agent-react-native">hyperledger/aries-mobile-agent-react-native</a></font></p>
+</p>
+
+<br/>
+<br/>
+<br/>
+
+<p align="center">
   <img alt="Hyperledger Aries logo" src="images/aries-logo.png" width="100px" />
   <h1 align="center">Aries Mobile Agent React Native</h1>
   <p align="center"><font size="+1">Built using TypeScript</font></p>

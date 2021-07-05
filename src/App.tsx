@@ -11,12 +11,7 @@ const App = (): Element => {
     <>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={eva.dark}>
-        <AgentProvider
-          agentConfig={{
-            mediatorUrl: 'https://30ca882068a9.ngrok.io',
-            genesisUrl: 'http://dev.greenlight.bcovrin.vonx.io/genesis',
-          }}
-        >
+        <AgentProvider>
           <RootView />
         </AgentProvider>
       </ApplicationProvider>
