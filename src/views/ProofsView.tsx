@@ -20,33 +20,32 @@ const ProofsView: React.FC = (): React.ReactElement => {
   const showNewProofRequestAlert = async (record: ProofRecord): Promise<void> => {
     const retrievedCredentials = []
 
-    console.log(JSON.stringify(record.requestMessage.indyProofRequest.toJSON(), null, 2))
-    // const requestedCredentials = await agent.proofs.getRequestedCredentialsForProofRequest(
-    //   record.requestMessage.indyProofRequest
-    // )
+    const requestedCredentials = await agent.proofs.getRequestedCredentialsForProofRequest(
+      record.requestMessage.indyProofRequest
+    )
 
-    // const selectedCredentials = agent.proofs.autoSelectCredentialsForProofRequest(requestedCredentials)
-    // const connectionString = `From: ${record.connectionId}\n\n`
+    const selectedCredentials = agent.proofs.autoSelectCredentialsForProofRequest(requestedCredentials)
+    const connectionString = `From: ${record.connectionId}\n\n`
 
-    // const stateString = `State: ${record.state}\n\n`
-    // const credentials = []
-    // await Promise.all(
-    //   Object.keys(selectedCredentials.requestedAttributes).map(async key => {
-    //     const credId = selectedCredentials.requestedAttributes[key].credentialId
-    //     if (!retrievedCredentials.some(id => id === credId)) {
-    //       retrievedCredentials.push(credId)
+    const stateString = `State: ${record.state}\n\n`
+    const credentials = []
+    await Promise.all(
+      Object.keys(selectedCredentials.requestedAttributes).map(async key => {
+        const credId = selectedCredentials.requestedAttributes[key].credentialId
+        if (!retrievedCredentials.some(id => id === credId)) {
+          retrievedCredentials.push(credId)
 
-    //       const credential = requestedCredentials.requestedAttributes[key].find(cred => cred.credentialId === credId)
-    //       credentials.push(credential.credentialInfo.attributes)
-    //     }
-    //   })
-    // )
-    const attributesString = 'Attributes:\n'
-    // credentials.forEach(credential => {
-    //   Object.keys(credential).map(key => {
-    //     attributesString += `\t- ${key} : ${credential[key]}\n`
-    //   })
-    // })
+          const credential = requestedCredentials.requestedAttributes[key].find(cred => cred.credentialId === credId)
+          credentials.push(credential.credentialInfo.attributes)
+        }
+      })
+    )
+    let attributesString = 'Attributes:\n'
+    credentials.forEach(credential => {
+      Object.keys(credential).map(key => {
+        attributesString += `\t- ${key} : ${credential[key]}\n`
+      })
+    })
 
     Alert.alert(
       'New Proof Request',
@@ -60,7 +59,7 @@ const ProofsView: React.FC = (): React.ReactElement => {
         {
           text: 'Accept',
           onPress: async (): Promise<void> => {
-            console.log('acceptie') /* await onProofAccept(record, selectedCredentials) */
+            await onProofAccept(record, selectedCredentials)
           },
         },
       ],
