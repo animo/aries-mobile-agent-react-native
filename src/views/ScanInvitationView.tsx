@@ -1,4 +1,4 @@
-import { decodeInvitationFromUrl, ConnectionInvitationMessage } from 'aries-framework-javascript'
+import { ConnectionInvitationMessage } from 'aries-framework'
 import React, { useEffect, useRef, useState } from 'react'
 import { Alert, StyleSheet, View } from 'react-native'
 import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
@@ -9,7 +9,6 @@ import { InvitationModal } from '../components'
 import { BaseView } from './BaseView'
 
 const ScannerView = ({ navigation }): React.ReactElement => {
-  const [invitationUrl, setInvitationUrl] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
   const [invitationObject, setInvitationObject] = useState<ConnectionInvitationMessage | undefined>(undefined)
   let qrScanned = false
@@ -21,7 +20,7 @@ const ScannerView = ({ navigation }): React.ReactElement => {
     Permissions.check('ios.permission.CAMERA')
   }, [])
 
-  async function showInvitationAlert(invite: ConnectionInvitationMessage, newInvite = false): Promise<void> {
+  async function showInvitationAlert(invite: ConnectionInvitationMessage): Promise<void> {
     Alert.alert(
       'Connection Invitation',
       `ID:\t\t${invite.id}\n\nEndpoint:\t\t${invite.serviceEndpoint}`,
@@ -49,21 +48,10 @@ const ScannerView = ({ navigation }): React.ReactElement => {
       return
     }
 
-    const invitation = await decodeInvitationFromUrl(scanResult.data)
+    const invitation = await ConnectionInvitationMessage.fromUrl(scanResult.data)
 
     await showInvitationAlert(invitation)
   }
-
-  // try {
-  //   Keyboard.dismiss()
-  //   const invitation = await decodeInvitationFromUrl(invitationUrl)
-  //   setInvitationObject(invitation)
-  //   setModalVisible(true)
-  // } catch (e) {
-  //   console.error('Something went wrong while decoding invitation url')
-  //   throw e
-  // }
-  // }
 
   async function onAccept(invite: ConnectionInvitationMessage): Promise<void> {
     await agent.connections.receiveInvitation(invite, { autoAcceptConnection: true })
@@ -110,7 +98,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 30,
-    // alignItems: 'center',
   },
   row: {
     flexDirection: 'row',

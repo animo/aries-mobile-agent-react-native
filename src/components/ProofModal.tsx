@@ -1,19 +1,19 @@
 import { Button, Card, Modal, Text } from '@ui-kitten/components'
-import { CredentialRecord } from 'aries-framework'
+import { ProofRecord } from 'aries-framework'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { KeyValueTextRow } from './KeyValueTextRow'
 
-type CredentialModalProps = {
+type ProofModalProps = {
   visible: boolean
-  credential: CredentialRecord
+  proof: ProofRecord
   onAccept: () => void
   onDecline: () => void
 }
 
 const Header = (): React.ReactElement => (
   <View>
-    <Text category="h6">Credential Offer</Text>
+    <Text category="h6">Proof Request</Text>
   </View>
 )
 
@@ -33,13 +33,13 @@ const Footer: React.FC<FooterProps> = (props: FooterProps): React.ReactElement =
   </View>
 )
 
-const CredentialModal: React.FC<CredentialModalProps> = (props: CredentialModalProps) => {
+const ProofModal: React.FC<ProofModalProps> = (props: ProofModalProps) => {
   const CardFooter = (): React.ReactElement => <Footer onAccept={props.onAccept} onDecline={props.onDecline} />
   return (
     <Modal visible={props.visible} backdropStyle={styles.backdrop} onBackdropPress={props.onDecline}>
       <Card disabled={false} header={Header} footer={CardFooter}>
-        <KeyValueTextRow title="ID" value={props.credential.id} />
-        <KeyValueTextRow title="Label" value={props.credential.state} />
+        <KeyValueTextRow title="ID" value={props.proof.id} />
+        <KeyValueTextRow title="Label" value={props.proof.state} />
       </Card>
     </Modal>
   )
@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export { CredentialModal }
+export { ProofModal }

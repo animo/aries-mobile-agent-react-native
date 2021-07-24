@@ -1,5 +1,5 @@
 import { Divider, List, Text } from '@ui-kitten/components'
-import { ConnectionRecord } from 'aries-framework-javascript'
+import { ConnectionRecord } from 'aries-framework'
 import React, { ReactElement } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 

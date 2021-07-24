@@ -1,10 +1,4 @@
-import {
-  ConnectionEventType,
-  CredentialRecord,
-  CredentialStateChangedEvent,
-  JsonTransformer,
-  OfferCredentialMessage,
-} from 'aries-framework-javascript'
+import { CredentialEventTypes, CredentialRecord, CredentialStateChangedEvent } from 'aries-framework'
 import React, { useEffect, useState } from 'react'
 import { useAgent } from '../agent/AgentProvider'
 import { CredentialList } from '../components/CredentialList'
@@ -29,9 +23,7 @@ const CredentialsView: React.FC = (): React.ReactElement => {
     bodyString = bodyString.concat(`State: ${record.state}\n\n`)
     let attributeStrings = 'Attributes:\n'
 
-    const offerMessage = JsonTransformer.fromJSON(record.offerMessage, OfferCredentialMessage)
-
-    for (const attribute of offerMessage.credentialPreview.attributes) {
+    for (const attribute of record.offerMessage.credentialPreview.attributes) {
       attributeStrings = attributeStrings.concat(`\t- ${attribute.name}:\t\t${attribute.value}\n`)
     }
 
@@ -55,22 +47,24 @@ const CredentialsView: React.FC = (): React.ReactElement => {
   const handleCredentialStateChanged = async (event: CredentialStateChangedEvent): Promise<void> => {
     // eslint-disable-next-line no-console
     console.log(
-      `credential event for: ${event.credentialRecord.id}, prev state -> ${event.previousState} new state: ${
-        event.credentialRecord.state
-      }`
+      `credential event for: ${event.payload.credentialRecord.id}, prev state -> ${
+        event.payload.previousState
+      } new state: ${event.payload.credentialRecord.state}`
     )
-    const newCredential = await agent.credentials.getById(event.credentialRecord.id)
-    const index = credentials.findIndex((x: CredentialRecord) => x.id === newCredential.id)
 
-    if (index === -1) {
-      showNewCredentialOfferAlert(newCredential)
-      setCredentials(credentials => [...credentials, newCredential])
-      return
-    }
+    const newCredential = await agent.credentials.getById(event.payload.credentialRecord.id)
+    setCredentials(credentials => {
+      const index = credentials.findIndex((x: CredentialRecord) => x.id === newCredential.id)
 
-    const newState = [...credentials]
-    newState[index] = newCredential
-    setCredentials(newState)
+      if (index === -1) {
+        showNewCredentialOfferAlert(newCredential)
+        return [...credentials, newCredential]
+      }
+
+      const newState = [...credentials]
+      newState[index] = newCredential
+      return newState
+    })
   }
 
   const showCredentialModal = (record: CredentialRecord): void => {
@@ -79,8 +73,12 @@ const CredentialsView: React.FC = (): React.ReactElement => {
   }
 
   const onCredentialAccept = async (record: CredentialRecord): Promise<void> => {
-    await agent.credentials.acceptCredential(record.id)
-
+    if (record.state === 'offer-received') {
+      await agent.credentials.acceptOffer(record.id)
+    }
+    if (record.state === 'credential-received') {
+      await agent.credentials.acceptCredential(record.id)
+    }
     setModalVisible(false)
     setModalCredential(undefined)
   }
@@ -91,13 +89,12 @@ const CredentialsView: React.FC = (): React.ReactElement => {
   }
 
   useEffect(() => {
-    agent.credentials.events.removeAllListeners(ConnectionEventType.StateChanged)
-    agent.credentials.events.on(ConnectionEventType.StateChanged, handleCredentialStateChanged)
-  }, [credentials])
-
-  useEffect(() => {
     fetchCredentials()
-    agent.credentials.events.on(ConnectionEventType.StateChanged, handleCredentialStateChanged)
+    agent.events.on(CredentialEventTypes.CredentialStateChanged, handleCredentialStateChanged)
+
+    return () => {
+      agent.events.off(CredentialEventTypes.CredentialStateChanged, handleCredentialStateChanged)
+    }
   }, [])
 
   return (
